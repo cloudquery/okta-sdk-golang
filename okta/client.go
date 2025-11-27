@@ -834,10 +834,7 @@ func getAccessTokenForDpopPrivateKey(tokenRequest *http.Request, httpClient *htt
 	if err != nil {
 		return nil, "", nil, err
 	}
-	dpopJWT, err := generateDpopJWT(privateKey, http.MethodPost, fmt.Sprintf("%v%v", orgURL, "/oauth2/v1/token"), nonce, "")
-	if err != nil {
-		return nil, "", nil, err
-	}
+
 	newClientAssertion, err := createClientAssertion(orgURL, clientID, signer)
 	if err != nil {
 		return nil, "", nil, err
@@ -849,7 +846,6 @@ func getAccessTokenForDpopPrivateKey(tokenRequest *http.Request, httpClient *htt
 	query.Add("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
 	query.Add("client_assertion", newClientAssertion)
 	tokenRequest.Body = io.NopCloser(strings.NewReader(query.Encode()))
-	tokenRequest.Header.Set("DPoP", dpopJWT)
 
 	bOff := &oktaBackoff{
 		ctx:             context.Background(),
@@ -858,6 +854,11 @@ func getAccessTokenForDpopPrivateKey(tokenRequest *http.Request, httpClient *htt
 	}
 	var tokenResponse *http.Response
 	operation := func() (*http.Response, error) {
+		dpopJWT, err := generateDpopJWT(privateKey, http.MethodPost, fmt.Sprintf("%v%v", orgURL, "/oauth2/v1/token"), nonce, "")
+		if err != nil {
+			return nil, err
+		}
+		tokenRequest.Header.Set("DPoP", dpopJWT)
 		resp, err := httpClient.Do(tokenRequest)
 		bOff.retryCount++
 		return resp, err
