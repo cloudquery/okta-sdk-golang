@@ -49,6 +49,10 @@ func newAPIResponse(r *http.Response, cli *APIClient, v interface{}) *APIRespons
 	return response
 }
 
+func (res *APIResponse) SetPagination(pg Pagination) {
+	res.pg = pg
+}
+
 func buildResponse(resp *http.Response, cli *APIClient, v interface{}) (*APIResponse, error) {
 	ct := resp.Header.Get("Content-Type")
 	response := newAPIResponse(resp, cli, v)
