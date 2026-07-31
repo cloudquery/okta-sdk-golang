@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UserNameExpression** | Pointer to **string** | For &#x60;usernameFormat&#x3D;CUSTOM&#x60;, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta | [optional] 
-**UsernameFormat** | **string** | Determines the username format when users sign in to Okta | [default to "EMAIL"]
+**UserNameExpression** | Pointer to **string** | For &#x60;userNameFormat&#x3D;CUSTOM&#x60;, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta | [optional] 
+**UserNameFormat** | Pointer to **string** | Determines the username format when users sign in to Okta | [optional] [default to "EMAIL"]
 
 ## Methods
 
 ### NewImportUsernameObject
 
-`func NewImportUsernameObject(usernameFormat string, ) *ImportUsernameObject`
+`func NewImportUsernameObject() *ImportUsernameObject`
 
 NewImportUsernameObject instantiates a new ImportUsernameObject object
 This constructor will assign default values to properties that have it defined,
@@ -51,24 +51,30 @@ SetUserNameExpression sets UserNameExpression field to given value.
 
 HasUserNameExpression returns a boolean if a field has been set.
 
-### GetUsernameFormat
+### GetUserNameFormat
 
-`func (o *ImportUsernameObject) GetUsernameFormat() string`
+`func (o *ImportUsernameObject) GetUserNameFormat() string`
 
-GetUsernameFormat returns the UsernameFormat field if non-nil, zero value otherwise.
+GetUserNameFormat returns the UserNameFormat field if non-nil, zero value otherwise.
 
-### GetUsernameFormatOk
+### GetUserNameFormatOk
 
-`func (o *ImportUsernameObject) GetUsernameFormatOk() (*string, bool)`
+`func (o *ImportUsernameObject) GetUserNameFormatOk() (*string, bool)`
 
-GetUsernameFormatOk returns a tuple with the UsernameFormat field if it's non-nil, zero value otherwise
+GetUserNameFormatOk returns a tuple with the UserNameFormat field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUsernameFormat
+### SetUserNameFormat
 
-`func (o *ImportUsernameObject) SetUsernameFormat(v string)`
+`func (o *ImportUsernameObject) SetUserNameFormat(v string)`
 
-SetUsernameFormat sets UsernameFormat field to given value.
+SetUserNameFormat sets UserNameFormat field to given value.
+
+### HasUserNameFormat
+
+`func (o *ImportUsernameObject) HasUserNameFormat() bool`
+
+HasUserNameFormat returns a boolean if a field has been set.
 
 
 

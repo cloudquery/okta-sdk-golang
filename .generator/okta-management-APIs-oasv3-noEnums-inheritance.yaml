@@ -38252,16 +38252,14 @@ components:
       properties:
         userNameExpression:
           type: string
-          description: For `usernameFormat=CUSTOM`, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta
-        usernameFormat:
+          description: For `userNameFormat=CUSTOM`, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta
+        userNameFormat:
           type: string
           description: Determines the username format when users sign in to Okta
           default: EMAIL
           enum:
             - EMAIL
             - CUSTOM
-      required:
-        - usernameFormat
     InactivityPolicyRuleCondition:
       type: object
       properties:

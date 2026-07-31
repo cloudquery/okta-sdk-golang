@@ -60901,19 +60901,17 @@ components:
       description: Determines the Okta username for the imported user
       properties:
         userNameExpression:
-          description: "For `usernameFormat=CUSTOM`, specifies the Okta Expression\
+          description: "For `userNameFormat=CUSTOM`, specifies the Okta Expression\
             \ Language statement for a username format that imported users use to\
             \ sign in to Okta"
           type: string
-        usernameFormat:
+        userNameFormat:
           default: EMAIL
           description: Determines the username format when users sign in to Okta
           enum:
           - EMAIL
           - CUSTOM
           type: string
-      required:
-      - usernameFormat
       type: object
     InactivityPolicyRuleCondition:
       properties:
