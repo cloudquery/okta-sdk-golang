@@ -10,6 +10,9 @@ on:
         description: "The version to release"
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   prepareReleaseBranch:
     runs-on: ubuntu-latest
