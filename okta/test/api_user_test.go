@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -27,7 +27,7 @@ import (
 	"context"
 	"testing"
 
-	openapiclient "github.com/okta/okta-sdk-golang/v6/okta"
+	openapiclient "github.com/okta/okta-sdk-golang/v8/okta"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -37,6 +37,19 @@ func Test_okta_UserAPIService(t *testing.T) {
 	configuration, err := openapiclient.NewConfiguration()
 	require.Nil(t, err)
 	apiClient := openapiclient.NewAPIClient(configuration)
+
+	t.Run("Test UserAPIService ClearChromeData", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var id string
+
+		httpRes, err := apiClient.UserAPI.ClearChromeData(context.Background(), id).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
 
 	t.Run("Test UserAPIService CreateUser", func(t *testing.T) {
 

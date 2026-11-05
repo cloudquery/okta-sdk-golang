@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Alg** | Pointer to **string** | Algorithm used in the key | [optional] 
 **E** | Pointer to **string** | RSA key value (exponent) for key binding | [optional] 
 **Kty** | Pointer to **string** | Cryptographic algorithm family for the certificate&#39;s key pair | [optional] 
 **N** | Pointer to **string** | RSA key value (modulus) for key binding | [optional] 
@@ -29,6 +30,31 @@ will change when the set of required properties is changed
 NewAddJwkRequestWithDefaults instantiates a new AddJwkRequest object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetAlg
+
+`func (o *AddJwkRequest) GetAlg() string`
+
+GetAlg returns the Alg field if non-nil, zero value otherwise.
+
+### GetAlgOk
+
+`func (o *AddJwkRequest) GetAlgOk() (*string, bool)`
+
+GetAlgOk returns a tuple with the Alg field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAlg
+
+`func (o *AddJwkRequest) SetAlg(v string)`
+
+SetAlg sets Alg field to given value.
+
+### HasAlg
+
+`func (o *AddJwkRequest) HasAlg() bool`
+
+HasAlg returns a boolean if a field has been set.
 
 ### GetE
 

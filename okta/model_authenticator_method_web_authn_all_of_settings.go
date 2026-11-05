@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -30,18 +30,30 @@ import (
 // checks if the AuthenticatorMethodWebAuthnAllOfSettings type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AuthenticatorMethodWebAuthnAllOfSettings{}
 
-// AuthenticatorMethodWebAuthnAllOfSettings The settings for the WebAuthn authenticator method
+// AuthenticatorMethodWebAuthnAllOfSettings The settings for the Passkey (FIDO2 WebAuthn) authenticator method
 type AuthenticatorMethodWebAuthnAllOfSettings struct {
-	// The FIDO2 Authenticator Attestation Global Unique Identifiers (AAGUID) groups available to the WebAuthn authenticator
+	// The FIDO2 Authenticator Attestation Global Unique Identifiers (AAGUID) groups available to the Passkey (FIDO2 WebAuthn) authenticator
 	AaguidGroups []AAGUIDGroupObject `json:"aaguidGroups,omitempty"`
-	// User verification setting. Possible values `DISCOURAGED` (the authenticator isn't asked to perform user verification, but may do so at its discretion), `PREFERRED` (the client uses an authenticator capable of user verification if possible), or `REQUIRED`(the client uses only an authenticator capable of user verification)
+	// User verification settings for enrollment.  This setting controls the user verification requirement during the enrollment of a new credential. It determines whether the authenticator requires verification when a user is registering their device or credential.
 	UserVerification *string `json:"userVerification,omitempty"`
+	// User verification settings for verification. This setting controls the user verification requirement during authentication (verification). It determines whether the authenticator requires user verification when a user signs in with an already-registered credential.  For verification, the value defaults to `PREFERRED`, unless the enrollment setting is `REQUIRED`. If the enrollment setting is `REQUIRED` for the authenticator, then the verification setting is also implicitly `REQUIRED`.
+	UserVerificationForVerify *string `json:"userVerificationForVerify,omitempty"`
 	// Method attachment
 	Attachment *string       `json:"attachment,omitempty"`
 	RpId       *WebAuthnRpId `json:"rpId,omitempty"`
-	// <x-lifecycle-container><x-lifecycle class=\"ea\"></x-lifecycle></x-lifecycle-container>Enables the passkeys autofill UI to display available WebAuthn discoverable credentials (\"resident key\") from the Sign-In Widget username field
-	EnableAutofillUI     *bool `json:"enableAutofillUI,omitempty"`
-	AdditionalProperties map[string]interface{}
+	// Resident key requirement setting. Okta recommends using only `REQUIRED` or `DISCOURAGED` to make the requirement preference explicit. Using `PREFERRED` can sometimes lead to unpredictable behavior depending on the client platform and authenticator capabilities.
+	ResidentKeyRequirement *string `json:"residentKeyRequirement,omitempty"`
+	// Indicates if the **Sign in with a Passkey** button on the Sign-In Widget is shown.
+	ShowSignInWithAPasskeyButton *bool `json:"showSignInWithAPasskeyButton,omitempty"`
+	// Indicates whether certificate-based attestation validation is enabled. When enabled, the authenticator's attestation certificate is validated against known root certificates (custom AAGUIDs with associated certificates or the [FIDO Metadata Service](https://fidoalliance.org/metadata/)) to ensure its validity.
+	CertBasedAttestationValidation *bool `json:"certBasedAttestationValidation,omitempty"`
+	// Indicates whether the authenticator is required to store the private key on a hardware component
+	HardwareProtected *bool `json:"hardwareProtected,omitempty"`
+	// Indicates whether the authenticator is required to be [Federal Information Processing Standards (FIPS)](https://csrc.nist.gov/glossary/term/federal_information_processing_standard) compliant
+	FipsCompliant *bool `json:"fipsCompliant,omitempty"`
+	// Indicates whether syncable passkeys are allowed. When enabled, users can register passkeys that are synchronized across their devices by using platform-specific mechanisms (such as iCloud Keychain for Apple devices or Google Password Manager for Android devices).
+	AllowSyncablePasskeys *bool `json:"allowSyncablePasskeys,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _AuthenticatorMethodWebAuthnAllOfSettings AuthenticatorMethodWebAuthnAllOfSettings
@@ -52,8 +64,16 @@ type _AuthenticatorMethodWebAuthnAllOfSettings AuthenticatorMethodWebAuthnAllOfS
 // will change when the set of required properties is changed
 func NewAuthenticatorMethodWebAuthnAllOfSettings() *AuthenticatorMethodWebAuthnAllOfSettings {
 	this := AuthenticatorMethodWebAuthnAllOfSettings{}
-	var enableAutofillUI bool = false
-	this.EnableAutofillUI = &enableAutofillUI
+	var residentKeyRequirement string = "REQUIRED"
+	this.ResidentKeyRequirement = &residentKeyRequirement
+	var certBasedAttestationValidation bool = false
+	this.CertBasedAttestationValidation = &certBasedAttestationValidation
+	var hardwareProtected bool = false
+	this.HardwareProtected = &hardwareProtected
+	var fipsCompliant bool = false
+	this.FipsCompliant = &fipsCompliant
+	var allowSyncablePasskeys bool = true
+	this.AllowSyncablePasskeys = &allowSyncablePasskeys
 	return &this
 }
 
@@ -62,8 +82,16 @@ func NewAuthenticatorMethodWebAuthnAllOfSettings() *AuthenticatorMethodWebAuthnA
 // but it doesn't guarantee that properties required by API are set
 func NewAuthenticatorMethodWebAuthnAllOfSettingsWithDefaults() *AuthenticatorMethodWebAuthnAllOfSettings {
 	this := AuthenticatorMethodWebAuthnAllOfSettings{}
-	var enableAutofillUI bool = false
-	this.EnableAutofillUI = &enableAutofillUI
+	var residentKeyRequirement string = "REQUIRED"
+	this.ResidentKeyRequirement = &residentKeyRequirement
+	var certBasedAttestationValidation bool = false
+	this.CertBasedAttestationValidation = &certBasedAttestationValidation
+	var hardwareProtected bool = false
+	this.HardwareProtected = &hardwareProtected
+	var fipsCompliant bool = false
+	this.FipsCompliant = &fipsCompliant
+	var allowSyncablePasskeys bool = true
+	this.AllowSyncablePasskeys = &allowSyncablePasskeys
 	return &this
 }
 
@@ -131,6 +159,38 @@ func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetUserVerification(v string)
 	o.UserVerification = &v
 }
 
+// GetUserVerificationForVerify returns the UserVerificationForVerify field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetUserVerificationForVerify() string {
+	if o == nil || IsNil(o.UserVerificationForVerify) {
+		var ret string
+		return ret
+	}
+	return *o.UserVerificationForVerify
+}
+
+// GetUserVerificationForVerifyOk returns a tuple with the UserVerificationForVerify field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetUserVerificationForVerifyOk() (*string, bool) {
+	if o == nil || IsNil(o.UserVerificationForVerify) {
+		return nil, false
+	}
+	return o.UserVerificationForVerify, true
+}
+
+// HasUserVerificationForVerify returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasUserVerificationForVerify() bool {
+	if o != nil && !IsNil(o.UserVerificationForVerify) {
+		return true
+	}
+
+	return false
+}
+
+// SetUserVerificationForVerify gets a reference to the given string and assigns it to the UserVerificationForVerify field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetUserVerificationForVerify(v string) {
+	o.UserVerificationForVerify = &v
+}
+
 // GetAttachment returns the Attachment field value if set, zero value otherwise.
 func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetAttachment() string {
 	if o == nil || IsNil(o.Attachment) {
@@ -195,36 +255,196 @@ func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetRpId(v WebAuthnRpId) {
 	o.RpId = &v
 }
 
-// GetEnableAutofillUI returns the EnableAutofillUI field value if set, zero value otherwise.
-func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetEnableAutofillUI() bool {
-	if o == nil || IsNil(o.EnableAutofillUI) {
-		var ret bool
+// GetResidentKeyRequirement returns the ResidentKeyRequirement field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetResidentKeyRequirement() string {
+	if o == nil || IsNil(o.ResidentKeyRequirement) {
+		var ret string
 		return ret
 	}
-	return *o.EnableAutofillUI
+	return *o.ResidentKeyRequirement
 }
 
-// GetEnableAutofillUIOk returns a tuple with the EnableAutofillUI field value if set, nil otherwise
+// GetResidentKeyRequirementOk returns a tuple with the ResidentKeyRequirement field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetEnableAutofillUIOk() (*bool, bool) {
-	if o == nil || IsNil(o.EnableAutofillUI) {
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetResidentKeyRequirementOk() (*string, bool) {
+	if o == nil || IsNil(o.ResidentKeyRequirement) {
 		return nil, false
 	}
-	return o.EnableAutofillUI, true
+	return o.ResidentKeyRequirement, true
 }
 
-// HasEnableAutofillUI returns a boolean if a field has been set.
-func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasEnableAutofillUI() bool {
-	if o != nil && !IsNil(o.EnableAutofillUI) {
+// HasResidentKeyRequirement returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasResidentKeyRequirement() bool {
+	if o != nil && !IsNil(o.ResidentKeyRequirement) {
 		return true
 	}
 
 	return false
 }
 
-// SetEnableAutofillUI gets a reference to the given bool and assigns it to the EnableAutofillUI field.
-func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetEnableAutofillUI(v bool) {
-	o.EnableAutofillUI = &v
+// SetResidentKeyRequirement gets a reference to the given string and assigns it to the ResidentKeyRequirement field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetResidentKeyRequirement(v string) {
+	o.ResidentKeyRequirement = &v
+}
+
+// GetShowSignInWithAPasskeyButton returns the ShowSignInWithAPasskeyButton field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetShowSignInWithAPasskeyButton() bool {
+	if o == nil || IsNil(o.ShowSignInWithAPasskeyButton) {
+		var ret bool
+		return ret
+	}
+	return *o.ShowSignInWithAPasskeyButton
+}
+
+// GetShowSignInWithAPasskeyButtonOk returns a tuple with the ShowSignInWithAPasskeyButton field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetShowSignInWithAPasskeyButtonOk() (*bool, bool) {
+	if o == nil || IsNil(o.ShowSignInWithAPasskeyButton) {
+		return nil, false
+	}
+	return o.ShowSignInWithAPasskeyButton, true
+}
+
+// HasShowSignInWithAPasskeyButton returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasShowSignInWithAPasskeyButton() bool {
+	if o != nil && !IsNil(o.ShowSignInWithAPasskeyButton) {
+		return true
+	}
+
+	return false
+}
+
+// SetShowSignInWithAPasskeyButton gets a reference to the given bool and assigns it to the ShowSignInWithAPasskeyButton field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetShowSignInWithAPasskeyButton(v bool) {
+	o.ShowSignInWithAPasskeyButton = &v
+}
+
+// GetCertBasedAttestationValidation returns the CertBasedAttestationValidation field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetCertBasedAttestationValidation() bool {
+	if o == nil || IsNil(o.CertBasedAttestationValidation) {
+		var ret bool
+		return ret
+	}
+	return *o.CertBasedAttestationValidation
+}
+
+// GetCertBasedAttestationValidationOk returns a tuple with the CertBasedAttestationValidation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetCertBasedAttestationValidationOk() (*bool, bool) {
+	if o == nil || IsNil(o.CertBasedAttestationValidation) {
+		return nil, false
+	}
+	return o.CertBasedAttestationValidation, true
+}
+
+// HasCertBasedAttestationValidation returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasCertBasedAttestationValidation() bool {
+	if o != nil && !IsNil(o.CertBasedAttestationValidation) {
+		return true
+	}
+
+	return false
+}
+
+// SetCertBasedAttestationValidation gets a reference to the given bool and assigns it to the CertBasedAttestationValidation field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetCertBasedAttestationValidation(v bool) {
+	o.CertBasedAttestationValidation = &v
+}
+
+// GetHardwareProtected returns the HardwareProtected field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetHardwareProtected() bool {
+	if o == nil || IsNil(o.HardwareProtected) {
+		var ret bool
+		return ret
+	}
+	return *o.HardwareProtected
+}
+
+// GetHardwareProtectedOk returns a tuple with the HardwareProtected field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetHardwareProtectedOk() (*bool, bool) {
+	if o == nil || IsNil(o.HardwareProtected) {
+		return nil, false
+	}
+	return o.HardwareProtected, true
+}
+
+// HasHardwareProtected returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasHardwareProtected() bool {
+	if o != nil && !IsNil(o.HardwareProtected) {
+		return true
+	}
+
+	return false
+}
+
+// SetHardwareProtected gets a reference to the given bool and assigns it to the HardwareProtected field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetHardwareProtected(v bool) {
+	o.HardwareProtected = &v
+}
+
+// GetFipsCompliant returns the FipsCompliant field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetFipsCompliant() bool {
+	if o == nil || IsNil(o.FipsCompliant) {
+		var ret bool
+		return ret
+	}
+	return *o.FipsCompliant
+}
+
+// GetFipsCompliantOk returns a tuple with the FipsCompliant field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetFipsCompliantOk() (*bool, bool) {
+	if o == nil || IsNil(o.FipsCompliant) {
+		return nil, false
+	}
+	return o.FipsCompliant, true
+}
+
+// HasFipsCompliant returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasFipsCompliant() bool {
+	if o != nil && !IsNil(o.FipsCompliant) {
+		return true
+	}
+
+	return false
+}
+
+// SetFipsCompliant gets a reference to the given bool and assigns it to the FipsCompliant field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetFipsCompliant(v bool) {
+	o.FipsCompliant = &v
+}
+
+// GetAllowSyncablePasskeys returns the AllowSyncablePasskeys field value if set, zero value otherwise.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetAllowSyncablePasskeys() bool {
+	if o == nil || IsNil(o.AllowSyncablePasskeys) {
+		var ret bool
+		return ret
+	}
+	return *o.AllowSyncablePasskeys
+}
+
+// GetAllowSyncablePasskeysOk returns a tuple with the AllowSyncablePasskeys field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) GetAllowSyncablePasskeysOk() (*bool, bool) {
+	if o == nil || IsNil(o.AllowSyncablePasskeys) {
+		return nil, false
+	}
+	return o.AllowSyncablePasskeys, true
+}
+
+// HasAllowSyncablePasskeys returns a boolean if a field has been set.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) HasAllowSyncablePasskeys() bool {
+	if o != nil && !IsNil(o.AllowSyncablePasskeys) {
+		return true
+	}
+
+	return false
+}
+
+// SetAllowSyncablePasskeys gets a reference to the given bool and assigns it to the AllowSyncablePasskeys field.
+func (o *AuthenticatorMethodWebAuthnAllOfSettings) SetAllowSyncablePasskeys(v bool) {
+	o.AllowSyncablePasskeys = &v
 }
 
 func (o AuthenticatorMethodWebAuthnAllOfSettings) MarshalJSON() ([]byte, error) {
@@ -243,14 +463,32 @@ func (o AuthenticatorMethodWebAuthnAllOfSettings) ToMap() (map[string]interface{
 	if !IsNil(o.UserVerification) {
 		toSerialize["userVerification"] = o.UserVerification
 	}
+	if !IsNil(o.UserVerificationForVerify) {
+		toSerialize["userVerificationForVerify"] = o.UserVerificationForVerify
+	}
 	if !IsNil(o.Attachment) {
 		toSerialize["attachment"] = o.Attachment
 	}
 	if !IsNil(o.RpId) {
 		toSerialize["rpId"] = o.RpId
 	}
-	if !IsNil(o.EnableAutofillUI) {
-		toSerialize["enableAutofillUI"] = o.EnableAutofillUI
+	if !IsNil(o.ResidentKeyRequirement) {
+		toSerialize["residentKeyRequirement"] = o.ResidentKeyRequirement
+	}
+	if !IsNil(o.ShowSignInWithAPasskeyButton) {
+		toSerialize["showSignInWithAPasskeyButton"] = o.ShowSignInWithAPasskeyButton
+	}
+	if !IsNil(o.CertBasedAttestationValidation) {
+		toSerialize["certBasedAttestationValidation"] = o.CertBasedAttestationValidation
+	}
+	if !IsNil(o.HardwareProtected) {
+		toSerialize["hardwareProtected"] = o.HardwareProtected
+	}
+	if !IsNil(o.FipsCompliant) {
+		toSerialize["fipsCompliant"] = o.FipsCompliant
+	}
+	if !IsNil(o.AllowSyncablePasskeys) {
+		toSerialize["allowSyncablePasskeys"] = o.AllowSyncablePasskeys
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -276,9 +514,15 @@ func (o *AuthenticatorMethodWebAuthnAllOfSettings) UnmarshalJSON(data []byte) (e
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "aaguidGroups")
 		delete(additionalProperties, "userVerification")
+		delete(additionalProperties, "userVerificationForVerify")
 		delete(additionalProperties, "attachment")
 		delete(additionalProperties, "rpId")
-		delete(additionalProperties, "enableAutofillUI")
+		delete(additionalProperties, "residentKeyRequirement")
+		delete(additionalProperties, "showSignInWithAPasskeyButton")
+		delete(additionalProperties, "certBasedAttestationValidation")
+		delete(additionalProperties, "hardwareProtected")
+		delete(additionalProperties, "fipsCompliant")
+		delete(additionalProperties, "allowSyncablePasskeys")
 		o.AdditionalProperties = additionalProperties
 	}
 

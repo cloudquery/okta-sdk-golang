@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -68,7 +68,7 @@ var (
 )
 
 const (
-	VERSION                   = "6.0.2"
+	VERSION                   = "8.0.0"
 	AccessTokenCacheKey       = "OKTA_ACCESS_TOKEN"
 	DpopAccessTokenNonce      = "DPOP_OKTA_ACCESS_TOKEN_NONCE"
 	DpopAccessTokenPrivateKey = "DPOP_OKTA_ACCESS_TOKEN_PRIVATE_KEY"
@@ -80,7 +80,7 @@ type RateLimit struct {
 	Reset     int64
 }
 
-// APIClient manages communication with the Okta Admin Management API v5.1.0
+// APIClient manages communication with the Okta Admin Management API API v5.1.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg           *Configuration
@@ -103,13 +103,13 @@ type APIClient struct {
 
 	ApplicationConnectionsAPI ApplicationConnectionsAPI
 
-	ApplicationCrossAppAccessConnectionsAPI ApplicationCrossAppAccessConnectionsAPI
-
 	ApplicationFeaturesAPI ApplicationFeaturesAPI
 
 	ApplicationGrantsAPI ApplicationGrantsAPI
 
 	ApplicationGroupsAPI ApplicationGroupsAPI
+
+	ApplicationInterclientTrustMappingsAPI ApplicationInterclientTrustMappingsAPI
 
 	ApplicationLogosAPI ApplicationLogosAPI
 
@@ -126,6 +126,8 @@ type APIClient struct {
 	ApplicationTokensAPI ApplicationTokensAPI
 
 	ApplicationUsersAPI ApplicationUsersAPI
+
+	ApplicationXAAConfigurationAPI ApplicationXAAConfigurationAPI
 
 	AssociatedDomainCustomizationsAPI AssociatedDomainCustomizationsAPI
 
@@ -151,13 +153,21 @@ type APIClient struct {
 
 	BehaviorAPI BehaviorAPI
 
+	BotProtectionAPI BotProtectionAPI
+
 	BrandsAPI BrandsAPI
 
+	BreachedCredentialProtectionAPI BreachedCredentialProtectionAPI
+
 	CAPTCHAAPI CAPTCHAAPI
+
+	CertificateAuthorityToScopeMappingAPI CertificateAuthorityToScopeMappingAPI
 
 	CustomDomainAPI CustomDomainAPI
 
 	CustomPagesAPI CustomPagesAPI
+
+	CustomTelephonyProviderAPI CustomTelephonyProviderAPI
 
 	CustomTemplatesAPI CustomTemplatesAPI
 
@@ -215,7 +225,7 @@ type APIClient struct {
 
 	OktaApplicationSettingsAPI OktaApplicationSettingsAPI
 
-	OktaPersonalSettingsAPI OktaPersonalSettingsAPI
+	OktaManagedUserAccountAPI OktaManagedUserAccountAPI
 
 	OrgCreatorAPI OrgCreatorAPI
 
@@ -300,8 +310,6 @@ type APIClient struct {
 	UserAPI UserAPI
 
 	UserAuthenticatorEnrollmentsAPI UserAuthenticatorEnrollmentsAPI
-
-	UserClassificationAPI UserClassificationAPI
 
 	UserCredAPI UserCredAPI
 
@@ -926,10 +934,10 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ApiTokenAPI = (*ApiTokenAPIService)(&c.common)
 	c.ApplicationAPI = (*ApplicationAPIService)(&c.common)
 	c.ApplicationConnectionsAPI = (*ApplicationConnectionsAPIService)(&c.common)
-	c.ApplicationCrossAppAccessConnectionsAPI = (*ApplicationCrossAppAccessConnectionsAPIService)(&c.common)
 	c.ApplicationFeaturesAPI = (*ApplicationFeaturesAPIService)(&c.common)
 	c.ApplicationGrantsAPI = (*ApplicationGrantsAPIService)(&c.common)
 	c.ApplicationGroupsAPI = (*ApplicationGroupsAPIService)(&c.common)
+	c.ApplicationInterclientTrustMappingsAPI = (*ApplicationInterclientTrustMappingsAPIService)(&c.common)
 	c.ApplicationLogosAPI = (*ApplicationLogosAPIService)(&c.common)
 	c.ApplicationPoliciesAPI = (*ApplicationPoliciesAPIService)(&c.common)
 	c.ApplicationSSOAPI = (*ApplicationSSOAPIService)(&c.common)
@@ -938,6 +946,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ApplicationSSOPublicKeysAPI = (*ApplicationSSOPublicKeysAPIService)(&c.common)
 	c.ApplicationTokensAPI = (*ApplicationTokensAPIService)(&c.common)
 	c.ApplicationUsersAPI = (*ApplicationUsersAPIService)(&c.common)
+	c.ApplicationXAAConfigurationAPI = (*ApplicationXAAConfigurationAPIService)(&c.common)
 	c.AssociatedDomainCustomizationsAPI = (*AssociatedDomainCustomizationsAPIService)(&c.common)
 	c.AttackProtectionAPI = (*AttackProtectionAPIService)(&c.common)
 	c.AuthenticatorAPI = (*AuthenticatorAPIService)(&c.common)
@@ -950,10 +959,14 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.AuthorizationServerRulesAPI = (*AuthorizationServerRulesAPIService)(&c.common)
 	c.AuthorizationServerScopesAPI = (*AuthorizationServerScopesAPIService)(&c.common)
 	c.BehaviorAPI = (*BehaviorAPIService)(&c.common)
+	c.BotProtectionAPI = (*BotProtectionAPIService)(&c.common)
 	c.BrandsAPI = (*BrandsAPIService)(&c.common)
+	c.BreachedCredentialProtectionAPI = (*BreachedCredentialProtectionAPIService)(&c.common)
 	c.CAPTCHAAPI = (*CAPTCHAAPIService)(&c.common)
+	c.CertificateAuthorityToScopeMappingAPI = (*CertificateAuthorityToScopeMappingAPIService)(&c.common)
 	c.CustomDomainAPI = (*CustomDomainAPIService)(&c.common)
 	c.CustomPagesAPI = (*CustomPagesAPIService)(&c.common)
+	c.CustomTelephonyProviderAPI = (*CustomTelephonyProviderAPIService)(&c.common)
 	c.CustomTemplatesAPI = (*CustomTemplatesAPIService)(&c.common)
 	c.DeviceAPI = (*DeviceAPIService)(&c.common)
 	c.DeviceAssuranceAPI = (*DeviceAssuranceAPIService)(&c.common)
@@ -982,7 +995,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.NetworkZoneAPI = (*NetworkZoneAPIService)(&c.common)
 	c.OAuth2ResourceServerCredentialsKeysAPI = (*OAuth2ResourceServerCredentialsKeysAPIService)(&c.common)
 	c.OktaApplicationSettingsAPI = (*OktaApplicationSettingsAPIService)(&c.common)
-	c.OktaPersonalSettingsAPI = (*OktaPersonalSettingsAPIService)(&c.common)
+	c.OktaManagedUserAccountAPI = (*OktaManagedUserAccountAPIService)(&c.common)
 	c.OrgCreatorAPI = (*OrgCreatorAPIService)(&c.common)
 	c.OrgSettingAdminAPI = (*OrgSettingAdminAPIService)(&c.common)
 	c.OrgSettingCommunicationAPI = (*OrgSettingCommunicationAPIService)(&c.common)
@@ -1025,7 +1038,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.UISchemaAPI = (*UISchemaAPIService)(&c.common)
 	c.UserAPI = (*UserAPIService)(&c.common)
 	c.UserAuthenticatorEnrollmentsAPI = (*UserAuthenticatorEnrollmentsAPIService)(&c.common)
-	c.UserClassificationAPI = (*UserClassificationAPIService)(&c.common)
 	c.UserCredAPI = (*UserCredAPIService)(&c.common)
 	c.UserFactorAPI = (*UserFactorAPIService)(&c.common)
 	c.UserGrantAPI = (*UserGrantAPIService)(&c.common)
@@ -1090,6 +1102,13 @@ func parameterToString(obj interface{}, collectionFormat string) string {
 		return strings.Trim(strings.Replace(fmt.Sprint(obj), " ", delimiter, -1), "[]")
 	} else if t, ok := obj.(time.Time); ok {
 		return t.Format(time.RFC3339)
+	} else if m, ok := obj.(json.Marshaler); ok {
+		if b, err := m.MarshalJSON(); err == nil {
+			var s string
+			if err := json.Unmarshal(b, &s); err == nil {
+				return s
+			}
+		}
 	}
 
 	return fmt.Sprintf("%v", obj)
@@ -1486,7 +1505,6 @@ func (c *APIClient) doWithRetries(ctx context.Context, req *http.Request) (*http
 			if err != nil {
 				return nil, err
 			}
-
 			req.Header = req.Header.Clone() // Start with original headers
 
 			// Update only the authentication headers from the fresh auth request

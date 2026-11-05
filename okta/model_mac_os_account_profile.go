@@ -1,0 +1,357 @@
+/*
+Okta Admin Management API
+
+Allows customers to easily access the Okta Management APIs
+
+Copyright 2025 - Present Okta, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+API version: 2025.08.0
+Contact: devex-public@okta.com
+*/
+
+package okta
+
+import (
+	"encoding/json"
+)
+
+// checks if the MacOSAccountProfile type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MacOSAccountProfile{}
+
+// MacOSAccountProfile struct for MacOSAccountProfile
+type MacOSAccountProfile struct {
+	// Unique identifier for the macOS account
+	AccountUuid *string `json:"accountUuid,omitempty"`
+	// Full name of the account user
+	FullName *string `json:"fullName,omitempty"`
+	// Indicates whether the OS account is managed by the organization
+	ManagementStatus *string `json:"managementStatus,omitempty"`
+	// Type of screen lock configured for the OS account
+	ScreenLockType *string `json:"screenLockType,omitempty"`
+	// Profile type discriminator
+	Type *string `json:"type,omitempty"`
+	// Username of the account
+	Username             *string `json:"username,omitempty"`
+	AdditionalProperties map[string]interface{}
+}
+
+type _MacOSAccountProfile MacOSAccountProfile
+
+// NewMacOSAccountProfile instantiates a new MacOSAccountProfile object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewMacOSAccountProfile() *MacOSAccountProfile {
+	this := MacOSAccountProfile{}
+	return &this
+}
+
+// NewMacOSAccountProfileWithDefaults instantiates a new MacOSAccountProfile object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewMacOSAccountProfileWithDefaults() *MacOSAccountProfile {
+	this := MacOSAccountProfile{}
+	return &this
+}
+
+// GetAccountUuid returns the AccountUuid field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetAccountUuid() string {
+	if o == nil || IsNil(o.AccountUuid) {
+		var ret string
+		return ret
+	}
+	return *o.AccountUuid
+}
+
+// GetAccountUuidOk returns a tuple with the AccountUuid field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetAccountUuidOk() (*string, bool) {
+	if o == nil || IsNil(o.AccountUuid) {
+		return nil, false
+	}
+	return o.AccountUuid, true
+}
+
+// HasAccountUuid returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasAccountUuid() bool {
+	if o != nil && !IsNil(o.AccountUuid) {
+		return true
+	}
+
+	return false
+}
+
+// SetAccountUuid gets a reference to the given string and assigns it to the AccountUuid field.
+func (o *MacOSAccountProfile) SetAccountUuid(v string) {
+	o.AccountUuid = &v
+}
+
+// GetFullName returns the FullName field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetFullName() string {
+	if o == nil || IsNil(o.FullName) {
+		var ret string
+		return ret
+	}
+	return *o.FullName
+}
+
+// GetFullNameOk returns a tuple with the FullName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetFullNameOk() (*string, bool) {
+	if o == nil || IsNil(o.FullName) {
+		return nil, false
+	}
+	return o.FullName, true
+}
+
+// HasFullName returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasFullName() bool {
+	if o != nil && !IsNil(o.FullName) {
+		return true
+	}
+
+	return false
+}
+
+// SetFullName gets a reference to the given string and assigns it to the FullName field.
+func (o *MacOSAccountProfile) SetFullName(v string) {
+	o.FullName = &v
+}
+
+// GetManagementStatus returns the ManagementStatus field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetManagementStatus() string {
+	if o == nil || IsNil(o.ManagementStatus) {
+		var ret string
+		return ret
+	}
+	return *o.ManagementStatus
+}
+
+// GetManagementStatusOk returns a tuple with the ManagementStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetManagementStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.ManagementStatus) {
+		return nil, false
+	}
+	return o.ManagementStatus, true
+}
+
+// HasManagementStatus returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasManagementStatus() bool {
+	if o != nil && !IsNil(o.ManagementStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetManagementStatus gets a reference to the given string and assigns it to the ManagementStatus field.
+func (o *MacOSAccountProfile) SetManagementStatus(v string) {
+	o.ManagementStatus = &v
+}
+
+// GetScreenLockType returns the ScreenLockType field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetScreenLockType() string {
+	if o == nil || IsNil(o.ScreenLockType) {
+		var ret string
+		return ret
+	}
+	return *o.ScreenLockType
+}
+
+// GetScreenLockTypeOk returns a tuple with the ScreenLockType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetScreenLockTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.ScreenLockType) {
+		return nil, false
+	}
+	return o.ScreenLockType, true
+}
+
+// HasScreenLockType returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasScreenLockType() bool {
+	if o != nil && !IsNil(o.ScreenLockType) {
+		return true
+	}
+
+	return false
+}
+
+// SetScreenLockType gets a reference to the given string and assigns it to the ScreenLockType field.
+func (o *MacOSAccountProfile) SetScreenLockType(v string) {
+	o.ScreenLockType = &v
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetType() string {
+	if o == nil || IsNil(o.Type) {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.Type) {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *MacOSAccountProfile) SetType(v string) {
+	o.Type = &v
+}
+
+// GetUsername returns the Username field value if set, zero value otherwise.
+func (o *MacOSAccountProfile) GetUsername() string {
+	if o == nil || IsNil(o.Username) {
+		var ret string
+		return ret
+	}
+	return *o.Username
+}
+
+// GetUsernameOk returns a tuple with the Username field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MacOSAccountProfile) GetUsernameOk() (*string, bool) {
+	if o == nil || IsNil(o.Username) {
+		return nil, false
+	}
+	return o.Username, true
+}
+
+// HasUsername returns a boolean if a field has been set.
+func (o *MacOSAccountProfile) HasUsername() bool {
+	if o != nil && !IsNil(o.Username) {
+		return true
+	}
+
+	return false
+}
+
+// SetUsername gets a reference to the given string and assigns it to the Username field.
+func (o *MacOSAccountProfile) SetUsername(v string) {
+	o.Username = &v
+}
+
+func (o MacOSAccountProfile) MarshalJSON() ([]byte, error) {
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o MacOSAccountProfile) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.AccountUuid) {
+		toSerialize["accountUuid"] = o.AccountUuid
+	}
+	if !IsNil(o.FullName) {
+		toSerialize["fullName"] = o.FullName
+	}
+	if !IsNil(o.ManagementStatus) {
+		toSerialize["managementStatus"] = o.ManagementStatus
+	}
+	if !IsNil(o.ScreenLockType) {
+		toSerialize["screenLockType"] = o.ScreenLockType
+	}
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
+	if !IsNil(o.Username) {
+		toSerialize["username"] = o.Username
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
+	return toSerialize, nil
+}
+
+func (o *MacOSAccountProfile) UnmarshalJSON(data []byte) (err error) {
+	varMacOSAccountProfile := _MacOSAccountProfile{}
+
+	err = json.Unmarshal(data, &varMacOSAccountProfile)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MacOSAccountProfile(varMacOSAccountProfile)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accountUuid")
+		delete(additionalProperties, "fullName")
+		delete(additionalProperties, "managementStatus")
+		delete(additionalProperties, "screenLockType")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "username")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
+}
+
+type NullableMacOSAccountProfile struct {
+	value *MacOSAccountProfile
+	isSet bool
+}
+
+func (v NullableMacOSAccountProfile) Get() *MacOSAccountProfile {
+	return v.value
+}
+
+func (v *NullableMacOSAccountProfile) Set(val *MacOSAccountProfile) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableMacOSAccountProfile) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableMacOSAccountProfile) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableMacOSAccountProfile(val *MacOSAccountProfile) *NullableMacOSAccountProfile {
+	return &NullableMacOSAccountProfile{value: val, isSet: true}
+}
+
+func (v NullableMacOSAccountProfile) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableMacOSAccountProfile) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

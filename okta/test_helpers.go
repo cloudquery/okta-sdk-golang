@@ -149,6 +149,15 @@ func (t *TestFactory) NewValidTestCreatePolicyRequest() CreatePolicyRequest {
 	return AccessPolicyAsCreatePolicyRequest(&accessPolicy)
 }
 
+func (t *TestFactory) NewValidTestDeactivatablePolicyRequest() CreatePolicyRequest {
+	name := randomTestString() + "_password_policy"
+	description := "Test password policy created by SDK tests"
+	policyType := "PASSWORD"
+	policy := NewPasswordPolicy(name, policyType)
+	policy.SetDescription(description)
+	return PasswordPolicyAsCreatePolicyRequest(policy)
+}
+
 func (t *TestFactory) NewValidTestPolicyRule() ListPolicyRules200ResponseInner {
 	name := randomTestString() + "_rule"
 
@@ -156,7 +165,12 @@ func (t *TestFactory) NewValidTestPolicyRule() ListPolicyRules200ResponseInner {
 	rule.SetName(name)
 	rule.SetType("ACCESS_POLICY")
 
+	// Create required conditions structure
+	groupCondition := NewGroupCondition()
+	userCondition := NewUserCondition()
 	peopleCondition := NewPolicyPeopleCondition()
+	peopleCondition.SetGroups(*groupCondition)
+	peopleCondition.SetUsers(*userCondition)
 
 	conditions := NewAccessPolicyRuleConditions()
 	conditions.SetPeople(*peopleCondition)

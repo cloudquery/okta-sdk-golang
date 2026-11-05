@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -165,7 +165,7 @@ type Configuration struct {
 func NewConfiguration(conf ...ConfigSetter) (*Configuration, error) {
 	cfg := &Configuration{
 		DefaultHeader: make(map[string]string),
-		UserAgent:     fmt.Sprintf("okta-sdk-golang/%s golang/%s %s/%s", "6.0.2", runtime.Version(), runtime.GOOS, runtime.GOARCH),
+		UserAgent:     fmt.Sprintf("okta-sdk-golang/%s golang/%s %s/%s", "8.0.0", runtime.Version(), runtime.GOOS, runtime.GOARCH),
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{

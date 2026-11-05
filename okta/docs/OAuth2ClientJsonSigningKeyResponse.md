@@ -4,21 +4,23 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Alg** | **string** | Algorithm used in the key | 
-**Created** | **string** | Timestamp when the OAuth 2.0 client JSON Web Key was created | [readonly] 
-**Id** | **string** | The unique ID of the OAuth Client JSON Web Key | [readonly] 
-**Kid** | Pointer to **NullableString** | Unique identifier of the JSON Web Key in the OAuth 2.0 client&#39;s JWKS | [optional] 
-**Kty** | **string** | Cryptographic algorithm family for the certificate&#39;s key pair | 
-**LastUpdated** | **string** | Timestamp when the OAuth 2.0 client JSON Web Key was updated | [readonly] 
-**Status** | Pointer to **string** | Status of the OAuth 2.0 client JSON Web Key | [optional] 
-**Use** | **string** | Acceptable use of the JSON Web Key | 
+**E** | Pointer to **string** | RSA key value (exponent) for key binding | [optional] 
+**Kty** | Pointer to **string** | Cryptographic algorithm family for the certificate&#39;s key pair | [optional] 
+**N** | Pointer to **string** | RSA key value (modulus) for key binding | [optional] 
+**Kid** | Pointer to **NullableString** | Unique identifier of the JSON Web Key in the OAUth 2.0 client&#39;s JWKS | [optional] 
+**Status** | Pointer to **string** | Status of the OAuth 2.0 client JSON Web Key | [optional] [default to "ACTIVE"]
+**Created** | Pointer to **string** | Timestamp when the OAuth 2.0 client JSON Web Key was created | [optional] [readonly] 
+**Id** | Pointer to **string** | The unique ID of the OAuth client JSON Web Key | [optional] [readonly] 
+**LastUpdated** | Pointer to **string** | Timestamp when the OAuth 2.0 client JSON Web Key was updated | [optional] [readonly] 
 **Links** | Pointer to [**OAuthClientSecretLinks**](OAuthClientSecretLinks.md) |  | [optional] 
+**X** | Pointer to **string** | The public x coordinate for the elliptic curve point | [optional] 
+**Y** | Pointer to **string** | The public y coordinate for the elliptic curve point | [optional] 
 
 ## Methods
 
 ### NewOAuth2ClientJsonSigningKeyResponse
 
-`func NewOAuth2ClientJsonSigningKeyResponse(alg string, created string, id string, kty string, lastUpdated string, use string, ) *OAuth2ClientJsonSigningKeyResponse`
+`func NewOAuth2ClientJsonSigningKeyResponse() *OAuth2ClientJsonSigningKeyResponse`
 
 NewOAuth2ClientJsonSigningKeyResponse instantiates a new OAuth2ClientJsonSigningKeyResponse object
 This constructor will assign default values to properties that have it defined,
@@ -33,65 +35,80 @@ NewOAuth2ClientJsonSigningKeyResponseWithDefaults instantiates a new OAuth2Clien
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetAlg
+### GetE
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetAlg() string`
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetE() string`
 
-GetAlg returns the Alg field if non-nil, zero value otherwise.
+GetE returns the E field if non-nil, zero value otherwise.
 
-### GetAlgOk
+### GetEOk
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetAlgOk() (*string, bool)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetEOk() (*string, bool)`
 
-GetAlgOk returns a tuple with the Alg field if it's non-nil, zero value otherwise
+GetEOk returns a tuple with the E field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAlg
+### SetE
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetAlg(v string)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetE(v string)`
 
-SetAlg sets Alg field to given value.
+SetE sets E field to given value.
 
+### HasE
 
-### GetCreated
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasE() bool`
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetCreated() string`
+HasE returns a boolean if a field has been set.
 
-GetCreated returns the Created field if non-nil, zero value otherwise.
+### GetKty
 
-### GetCreatedOk
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetKty() string`
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetCreatedOk() (*string, bool)`
+GetKty returns the Kty field if non-nil, zero value otherwise.
 
-GetCreatedOk returns a tuple with the Created field if it's non-nil, zero value otherwise
+### GetKtyOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetKtyOk() (*string, bool)`
+
+GetKtyOk returns a tuple with the Kty field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCreated
+### SetKty
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetCreated(v string)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetKty(v string)`
 
-SetCreated sets Created field to given value.
+SetKty sets Kty field to given value.
 
+### HasKty
 
-### GetId
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasKty() bool`
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetId() string`
+HasKty returns a boolean if a field has been set.
 
-GetId returns the Id field if non-nil, zero value otherwise.
+### GetN
 
-### GetIdOk
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetN() string`
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetIdOk() (*string, bool)`
+GetN returns the N field if non-nil, zero value otherwise.
 
-GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+### GetNOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetNOk() (*string, bool)`
+
+GetNOk returns a tuple with the N field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetId
+### SetN
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetId(v string)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetN(v string)`
 
-SetId sets Id field to given value.
+SetN sets N field to given value.
 
+### HasN
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasN() bool`
+
+HasN returns a boolean if a field has been set.
 
 ### GetKid
 
@@ -128,46 +145,6 @@ HasKid returns a boolean if a field has been set.
 `func (o *OAuth2ClientJsonSigningKeyResponse) UnsetKid()`
 
 UnsetKid ensures that no value is present for Kid, not even an explicit nil
-### GetKty
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetKty() string`
-
-GetKty returns the Kty field if non-nil, zero value otherwise.
-
-### GetKtyOk
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetKtyOk() (*string, bool)`
-
-GetKtyOk returns a tuple with the Kty field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetKty
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetKty(v string)`
-
-SetKty sets Kty field to given value.
-
-
-### GetLastUpdated
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetLastUpdated() string`
-
-GetLastUpdated returns the LastUpdated field if non-nil, zero value otherwise.
-
-### GetLastUpdatedOk
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetLastUpdatedOk() (*string, bool)`
-
-GetLastUpdatedOk returns a tuple with the LastUpdated field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLastUpdated
-
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetLastUpdated(v string)`
-
-SetLastUpdated sets LastUpdated field to given value.
-
-
 ### GetStatus
 
 `func (o *OAuth2ClientJsonSigningKeyResponse) GetStatus() string`
@@ -193,25 +170,80 @@ SetStatus sets Status field to given value.
 
 HasStatus returns a boolean if a field has been set.
 
-### GetUse
+### GetCreated
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetUse() string`
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetCreated() string`
 
-GetUse returns the Use field if non-nil, zero value otherwise.
+GetCreated returns the Created field if non-nil, zero value otherwise.
 
-### GetUseOk
+### GetCreatedOk
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) GetUseOk() (*string, bool)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetCreatedOk() (*string, bool)`
 
-GetUseOk returns a tuple with the Use field if it's non-nil, zero value otherwise
+GetCreatedOk returns a tuple with the Created field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUse
+### SetCreated
 
-`func (o *OAuth2ClientJsonSigningKeyResponse) SetUse(v string)`
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetCreated(v string)`
 
-SetUse sets Use field to given value.
+SetCreated sets Created field to given value.
 
+### HasCreated
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasCreated() bool`
+
+HasCreated returns a boolean if a field has been set.
+
+### GetId
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetId(v string)`
+
+SetId sets Id field to given value.
+
+### HasId
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasId() bool`
+
+HasId returns a boolean if a field has been set.
+
+### GetLastUpdated
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetLastUpdated() string`
+
+GetLastUpdated returns the LastUpdated field if non-nil, zero value otherwise.
+
+### GetLastUpdatedOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetLastUpdatedOk() (*string, bool)`
+
+GetLastUpdatedOk returns a tuple with the LastUpdated field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastUpdated
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetLastUpdated(v string)`
+
+SetLastUpdated sets LastUpdated field to given value.
+
+### HasLastUpdated
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasLastUpdated() bool`
+
+HasLastUpdated returns a boolean if a field has been set.
 
 ### GetLinks
 
@@ -237,6 +269,56 @@ SetLinks sets Links field to given value.
 `func (o *OAuth2ClientJsonSigningKeyResponse) HasLinks() bool`
 
 HasLinks returns a boolean if a field has been set.
+
+### GetX
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetX() string`
+
+GetX returns the X field if non-nil, zero value otherwise.
+
+### GetXOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetXOk() (*string, bool)`
+
+GetXOk returns a tuple with the X field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetX
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetX(v string)`
+
+SetX sets X field to given value.
+
+### HasX
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasX() bool`
+
+HasX returns a boolean if a field has been set.
+
+### GetY
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetY() string`
+
+GetY returns the Y field if non-nil, zero value otherwise.
+
+### GetYOk
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) GetYOk() (*string, bool)`
+
+GetYOk returns a tuple with the Y field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetY
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) SetY(v string)`
+
+SetY sets Y field to given value.
+
+### HasY
+
+`func (o *OAuth2ClientJsonSigningKeyResponse) HasY() bool`
+
+HasY returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

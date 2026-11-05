@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -30,7 +30,7 @@ import (
 // checks if the PolicyPeopleCondition type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &PolicyPeopleCondition{}
 
-// PolicyPeopleCondition Identifies users and groups that are used together
+// PolicyPeopleCondition Specifies the users and groups that are included or excluded by the policy rule
 type PolicyPeopleCondition struct {
 	Groups               *GroupCondition `json:"groups,omitempty"`
 	Users                *UserCondition  `json:"users,omitempty"`

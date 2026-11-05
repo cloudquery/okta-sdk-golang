@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -71,7 +71,7 @@ type DeviceAPI interface {
 	/*
 			DeleteDevice Delete a device
 
-			Deletes (permanently) a device by `deviceId` if it has a status of `DEACTIVATED`. You can transition the device to `DEACTIVATED` status using the [Deactivate a Device](/openapi/okta-management/management/tag/Device/#tag/Device/operation/deactivateDevice) endpoint.
+			Deletes (permanently) a device by `deviceId` if it has a status of `DEACTIVATED`. You can transition the device to `DEACTIVATED` status using the [Deactivate a Device](/openapi/okta-management/management/tags/device/other/deactivatedevice) endpoint.
 		This request is destructive and deletes all of the profile data related to the device. Once deleted, device data can't be recovered. However, reenrollment creates a new device record.
 		> **Note:** Attempts to delete a device that isn't in a `DEACTIVATED` state raise an error.
 
@@ -96,8 +96,8 @@ type DeviceAPI interface {
 	GetDevice(ctx context.Context, deviceId string) ApiGetDeviceRequest
 
 	// GetDeviceExecute executes the request
-	//  @return Device
-	GetDeviceExecute(r ApiGetDeviceRequest) (*Device, *APIResponse, error)
+	//  @return DeviceWithProviders
+	GetDeviceExecute(r ApiGetDeviceRequest) (*DeviceWithProviders, *APIResponse, error)
 
 	/*
 		ListDeviceUsers List all users for a device
@@ -119,7 +119,7 @@ type DeviceAPI interface {
 
 			Lists all devices with pagination support.
 
-		>**Note:** To list all devices enrolled by a user, use the [List all devices endpoint in the User Resources API](/openapi/okta-management/management/tag/UserResources/#tag/UserResources/operation/listUserDevices).
+		>**Note:** To list all devices enrolled by a user, use the [List all devices endpoint in the User Resources API](/openapi/okta-management/management/userresources/listuserdevices).
 
 		You can return a subset of devices that match a supported search criteria using the `search` query parameter.
 		Searches for devices based on the properties specified in the `search` parameter conforming SCIM filter specifications (case-insensitive). This data is eventually consistent. The API returns different results depending on specified queries in the request. Empty list is returned if no objects match `search` request.
@@ -503,7 +503,7 @@ func (r ApiDeleteDeviceRequest) Execute() (*APIResponse, error) {
 /*
 DeleteDevice Delete a device
 
-Deletes (permanently) a device by `deviceId` if it has a status of `DEACTIVATED`. You can transition the device to `DEACTIVATED` status using the [Deactivate a Device](/openapi/okta-management/management/tag/Device/#tag/Device/operation/deactivateDevice) endpoint.
+Deletes (permanently) a device by `deviceId` if it has a status of `DEACTIVATED`. You can transition the device to `DEACTIVATED` status using the [Deactivate a Device](/openapi/okta-management/management/tags/device/other/deactivatedevice) endpoint.
 This request is destructive and deletes all of the profile data related to the device. Once deleted, device data can't be recovered. However, reenrollment creates a new device record.
 > **Note:** Attempts to delete a device that isn't in a `DEACTIVATED` state raise an error.
 
@@ -651,7 +651,7 @@ type ApiGetDeviceRequest struct {
 	retryCount int32
 }
 
-func (r ApiGetDeviceRequest) Execute() (*Device, *APIResponse, error) {
+func (r ApiGetDeviceRequest) Execute() (*DeviceWithProviders, *APIResponse, error) {
 	return r.ApiService.GetDeviceExecute(r)
 }
 
@@ -675,13 +675,13 @@ func (a *DeviceAPIService) GetDevice(ctx context.Context, deviceId string) ApiGe
 
 // Execute executes the request
 //
-//	@return Device
-func (a *DeviceAPIService) GetDeviceExecute(r ApiGetDeviceRequest) (*Device, *APIResponse, error) {
+//	@return DeviceWithProviders
+func (a *DeviceAPIService) GetDeviceExecute(r ApiGetDeviceRequest) (*DeviceWithProviders, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Device
+		localVarReturnValue  *DeviceWithProviders
 		localVarHTTPResponse *http.Response
 		localAPIResponse     *APIResponse
 		err                  error
@@ -983,6 +983,7 @@ type ApiListDevicesRequest struct {
 	limit      *int32
 	search     *string
 	expand     *string
+	fields     *string
 	retryCount int32
 }
 
@@ -1009,6 +1010,12 @@ func (r ApiListDevicesRequest) Expand(expand string) ApiListDevicesRequest {
 	return r
 }
 
+// Specifies a comma-separated list of fields to include in the response. Use the &#x60;fields&#x60; parameter to reduce the response payload size.  Supports the following top-level fields: &#x60;id&#x60;, &#x60;status&#x60;, &#x60;created&#x60;, &#x60;lastUpdated&#x60;, &#x60;profile&#x60;, &#x60;_links&#x60;  Use the &#x60;profile:(fieldName)&#x60; syntax to request specific profile attributes, such as &#x60;profile:(displayName)&#x60; or &#x60;profile:(displayName,platform,osVersion)&#x60;. Bare &#x60;profile&#x60; field is also supported and returns the full profile object.  &gt; **Note:** The &#x60;id&#x60; field is always included in the response. The &#x60;_embedded&#x60; property is controlled by the &#x60;expand&#x60; parameter, not &#x60;fields&#x60;. Fields such as &#x60;resourceType&#x60;, &#x60;resourceId&#x60;, and &#x60;resourceDisplayName&#x60; are standard list-response metadata and can&#39;t be individually selected. They&#39;re omitted when any &#x60;fields&#x60; value is specified. The &#x60;resourceAlternateId&#x60; field always returns &#x60;null&#x60; for backwards compatibility.
+func (r ApiListDevicesRequest) Fields(fields string) ApiListDevicesRequest {
+	r.fields = &fields
+	return r
+}
+
 func (r ApiListDevicesRequest) Execute() ([]DeviceList, *APIResponse, error) {
 	return r.ApiService.ListDevicesExecute(r)
 }
@@ -1018,7 +1025,7 @@ ListDevices List all devices
 
 Lists all devices with pagination support.
 
->**Note:** To list all devices enrolled by a user, use the [List all devices endpoint in the User Resources API](/openapi/okta-management/management/tag/UserResources/#tag/UserResources/operation/listUserDevices).
+>**Note:** To list all devices enrolled by a user, use the [List all devices endpoint in the User Resources API](/openapi/okta-management/management/userresources/listuserdevices).
 
 You can return a subset of devices that match a supported search criteria using the `search` query parameter.
 Searches for devices based on the properties specified in the `search` parameter conforming SCIM filter specifications (case-insensitive). This data is eventually consistent. The API returns different results depending on specified queries in the request. Empty list is returned if no objects match `search` request.
@@ -1083,6 +1090,9 @@ func (a *DeviceAPIService) ListDevicesExecute(r ApiListDevicesRequest) ([]Device
 	}
 	if r.expand != nil {
 		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
+	}
+	if r.fields != nil {
+		localVarQueryParams.Add("fields", parameterToString(*r.fields, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

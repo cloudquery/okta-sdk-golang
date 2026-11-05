@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -39,7 +39,7 @@ type ProfileEnrollmentPolicyRuleAction struct {
 	AllowedIdentifiers []string `json:"allowedIdentifiers,omitempty"`
 	// Additional authenticator fields that can be used on the first page of user registration. Valid values only includes `'password'`.
 	EnrollAuthenticatorTypes []string `json:"enrollAuthenticatorTypes,omitempty"`
-	// (Optional) The `id` of at most one registration inline hook
+	// The `id` of at most one pre-registration inline hook to invoke during registration. When you set it, `scopes` is required to specify which registration flows trigger the hook.
 	PreRegistrationInlineHooks []PreRegistrationInlineHook `json:"preRegistrationInlineHooks,omitempty"`
 	// A list of attributes to prompt the user for during registration or progressive profiling. Where defined on the user schema, these attributes are persisted in the user profile. You can also add non-schema attributes, which aren't persisted to the user's profile, but are included in requests to the registration inline hook. A maximum of 10 profile properties is supported.
 	ProfileAttributes []ProfileEnrollmentPolicyRuleProfileAttribute `json:"profileAttributes,omitempty"`

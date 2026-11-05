@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -50,6 +50,7 @@ type ApplicationUsersAPI interface {
 		    > **Notes:**
 		    > * When Universal Directory is enabled, you can only specify profile properties that aren't defined in profile mappings.
 		    > * Omit mapped properties during assignment to minimize assignment errors.
+		    > * Don't use the `scope` parameter to convert between assignment types. To convert a group assignment to an individual assignment, first remove the user from the assigned group, and then create an individual user assignment.
 
 			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 			@param appId Application ID
@@ -164,6 +165,7 @@ Assigns a user to an app for:
     > **Notes:**
     > * When Universal Directory is enabled, you can only specify profile properties that aren't defined in profile mappings.
     > * Omit mapped properties during assignment to minimize assignment errors.
+    > * Don't use the `scope` parameter to convert between assignment types. To convert a group assignment to an individual assignment, first remove the user from the assigned group, and then create an individual user assignment.
 
     @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
     @param appId Application ID
@@ -341,7 +343,7 @@ type ApiGetApplicationUserRequest struct {
 	retryCount int32
 }
 
-// An optional query parameter to return the corresponding [User](/openapi/okta-management/management/tag/User/) object in the &#x60;_embedded&#x60; property. Valid value: &#x60;user&#x60;
+// An optional query parameter to return the corresponding [User](/openapi/okta-management/management/tags/user) object in the &#x60;_embedded&#x60; property. Valid value: &#x60;user&#x60;
 func (r ApiGetApplicationUserRequest) Expand(expand string) ApiGetApplicationUserRequest {
 	r.expand = &expand
 	return r
@@ -541,7 +543,7 @@ func (r ApiListApplicationUsersRequest) Q(q string) ApiListApplicationUsersReque
 	return r
 }
 
-// An optional query parameter to return the corresponding [User](/openapi/okta-management/management/tag/User/) object in the &#x60;_embedded&#x60; property. Valid value: &#x60;user&#x60;
+// An optional query parameter to return the corresponding [User](/openapi/okta-management/management/tags/user) object in the &#x60;_embedded&#x60; property. Valid value: &#x60;user&#x60;
 func (r ApiListApplicationUsersRequest) Expand(expand string) ApiListApplicationUsersRequest {
 	r.expand = &expand
 	return r
