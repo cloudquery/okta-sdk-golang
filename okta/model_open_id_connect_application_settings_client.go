@@ -25,7 +25,6 @@ package okta
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 // checks if the OpenIdConnectApplicationSettingsClient type satisfies the MappedNullable interface at compile time
@@ -51,7 +50,7 @@ type OpenIdConnectApplicationSettingsClient struct {
 	ConsentMethod *string `json:"consent_method,omitempty"`
 	// Indicates that the client application uses Demonstrating Proof-of-Possession (DPoP) for token requests. If `true`, the authorization server rejects token requests from this client that don't contain the DPoP header. > **Note:** If `dpop_bound_access_tokens` is true, then `client_credentials` and `implicit` aren't allowed in `grant_types`.
 	DpopBoundAccessTokens *bool    `json:"dpop_bound_access_tokens,omitempty"`
-	GrantTypes            []string `json:"grant_types"`
+	GrantTypes            []string `json:"grant_types,omitempty"`
 	// JWE alg algorithm for encrypting the ID token issued to this client. If this is requested, the response is signed, and then encrypted with the result being a nested JWT. The default, if omitted, is that no encryption is performed. See the [Application Public Keys API](/openapi/okta-management/management/applicationssopublickeys/) for more information on encryption keys. See [Key management](https://developer.okta.com/docs/guides/key-management/main/) for more information on how encryption keys are used.
 	IdTokenEncryptedResponseAlg *string                                    `json:"id_token_encrypted_response_alg,omitempty"`
 	IdpInitiatedLogin           *OpenIdConnectApplicationIdpInitiatedLogin `json:"idp_initiated_login,omitempty"`
@@ -93,13 +92,12 @@ type _OpenIdConnectApplicationSettingsClient OpenIdConnectApplicationSettingsCli
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOpenIdConnectApplicationSettingsClient(grantTypes []string) *OpenIdConnectApplicationSettingsClient {
+func NewOpenIdConnectApplicationSettingsClient() *OpenIdConnectApplicationSettingsClient {
 	this := OpenIdConnectApplicationSettingsClient{}
 	var consentMethod string = "TRUSTED"
 	this.ConsentMethod = &consentMethod
 	var dpopBoundAccessTokens bool = false
 	this.DpopBoundAccessTokens = &dpopBoundAccessTokens
-	this.GrantTypes = grantTypes
 	return &this
 }
 
@@ -403,26 +401,34 @@ func (o *OpenIdConnectApplicationSettingsClient) SetDpopBoundAccessTokens(v bool
 	o.DpopBoundAccessTokens = &v
 }
 
-// GetGrantTypes returns the GrantTypes field value
+// GetGrantTypes returns the GrantTypes field value if set, zero value otherwise.
 func (o *OpenIdConnectApplicationSettingsClient) GetGrantTypes() []string {
-	if o == nil {
+	if o == nil || IsNil(o.GrantTypes) {
 		var ret []string
 		return ret
 	}
-
 	return o.GrantTypes
 }
 
-// GetGrantTypesOk returns a tuple with the GrantTypes field value
+// GetGrantTypesOk returns a tuple with the GrantTypes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OpenIdConnectApplicationSettingsClient) GetGrantTypesOk() ([]string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.GrantTypes) {
 		return nil, false
 	}
 	return o.GrantTypes, true
 }
 
-// SetGrantTypes sets field value
+// HasGrantTypes returns a boolean if a field has been set.
+func (o *OpenIdConnectApplicationSettingsClient) HasGrantTypes() bool {
+	if o != nil && !IsNil(o.GrantTypes) {
+		return true
+	}
+
+	return false
+}
+
+// SetGrantTypes gets a reference to the given []string and assigns it to the GrantTypes field.
 func (o *OpenIdConnectApplicationSettingsClient) SetGrantTypes(v []string) {
 	o.GrantTypes = v
 }
@@ -1040,7 +1046,9 @@ func (o OpenIdConnectApplicationSettingsClient) ToMap() (map[string]interface{},
 	if !IsNil(o.DpopBoundAccessTokens) {
 		toSerialize["dpop_bound_access_tokens"] = o.DpopBoundAccessTokens
 	}
-	toSerialize["grant_types"] = o.GrantTypes
+	if !IsNil(o.GrantTypes) {
+		toSerialize["grant_types"] = o.GrantTypes
+	}
 	if !IsNil(o.IdTokenEncryptedResponseAlg) {
 		toSerialize["id_token_encrypted_response_alg"] = o.IdTokenEncryptedResponseAlg
 	}
@@ -1104,27 +1112,6 @@ func (o OpenIdConnectApplicationSettingsClient) ToMap() (map[string]interface{},
 }
 
 func (o *OpenIdConnectApplicationSettingsClient) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"grant_types",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
 	varOpenIdConnectApplicationSettingsClient := _OpenIdConnectApplicationSettingsClient{}
 
 	err = json.Unmarshal(data, &varOpenIdConnectApplicationSettingsClient)

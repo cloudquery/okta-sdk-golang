@@ -105379,19 +105379,17 @@ components:
       description: Determines the Okta username for the imported user
       properties:
         userNameExpression:
-          description: "For `usernameFormat=CUSTOM`, specifies the Okta Expression\
+          description: "For `userNameFormat=CUSTOM`, specifies the Okta Expression\
             \ Language statement for a username format that imported users use to\
             \ sign in to Okta"
           type: string
-        usernameFormat:
+        userNameFormat:
           default: EMAIL
           description: Determines the username format when users sign in to Okta
           enum:
           - EMAIL
           - CUSTOM
           type: string
-      required:
-      - usernameFormat
       type: object
     InactivityPolicyRuleCondition:
       properties:
@@ -112270,8 +112268,6 @@ components:
               For example, if `https://redirect-*-domain.example.com/oidc/redirect` is configured as a redirect URI, then `https://redirect-1-domain.example.com/oidc/redirect` and `https://redirect-sub-domain.example.com/oidc/redirect` match, but `https://redirect-1.sub-domain.example.com/oidc/redirect` doesn't match.
               Only the `https` URI scheme can use wildcard redirect URIs.
               > **Note:** The use of wildcard subdomains is discouraged as an insecure practice, since it may allow malicious actors to have tokens or authorization codes sent to unexpected or attacker-controlled pages. Exercise caution if you decide to include a wildcard redirect URI in your configuration.
-      required:
-      - grant_types
       type: object
     OpenIdConnectApplicationSettingsClientKeys:
       description: "A [JSON Web Key Set](https://tools.ietf.org/html/rfc7517#section-5)\
@@ -122338,11 +122334,6 @@ components:
           description: CSS selector for the **Username** field in the sign-in form
             (for three-field SWA apps with the `template_swa3field` app name definition)
           type: string
-      required:
-      - buttonField
-      - passwordField
-      - url
-      - usernameField
       type: object
     TacAuthenticatorEnrollment:
       example:

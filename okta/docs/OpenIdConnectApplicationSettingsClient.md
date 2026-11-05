@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **ClientUri** | Pointer to **string** | URL string of a web page providing information about the client | [optional] 
 **ConsentMethod** | Pointer to **string** | Indicates whether user consent is required or implicit. A consent dialog appears for the end user depending on the values of three elements:  * [prompt](/openapi/okta-oauth/oauth/orgas/authorize#orgas/authorize/t&#x3D;request&amp;in&#x3D;query&amp;path&#x3D;prompt): A query parameter that is used in requests to &#x60;/authorize&#x60; * &#x60;consent_method&#x60; (this property) * [consent](/openapi/okta-management/management/authorizationserverscopes/createoauth2scope#authorizationserverscopes/createoauth2scope/t&#x3D;request&amp;path&#x3D;consent): A [Scope](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/AuthorizationServerScopes/) property that allows you to enable or disable user consent for an individual scope  | &#x60;prompt&#x60; | &#x60;consent_method&#x60; | &#x60;consent&#x60; | Result | ---------- | ----------- | ---------- | ----------- | | CONSENT | TRUSTED or REQUIRED | REQUIRED | Prompted | | CONSENT | TRUSTED or REQUIRED | FLEXIBLE | Prompted | | CONSENT | TRUSTED | IMPLICIT | Not prompted | | NONE | TRUSTED | FLEXIBLE, IMPLICIT, or REQUIRED | Not prompted | | NONE | REQUIRED | FLEXIBLE or REQUIRED | Prompted | | NONE | REQUIRED | IMPLICIT | Not prompted |  &gt; **Notes:** &gt; * If you request a scope that requires consent while using the &#x60;client_credentials&#x60; flow, an error is returned because the flow doesn&#39;t support user consent. &gt; * If the &#x60;prompt&#x60; value is set to &#x60;NONE&#x60;, but the &#x60;consent_method&#x60; and the consent values are set to &#x60;REQUIRED&#x60;, then an error occurs. &gt; * When a scope is requested during a Client Credentials grant flow and &#x60;consent&#x60; is set to &#x60;FLEXIBLE&#x60;, the scope is granted in the access token with no consent prompt. This occurs because there is no user involved in a two-legged OAuth 2.0 [Client Credentials](https://developer.okta.com/docs/guides/implement-grant-type/clientcreds/main/) grant flow.  | [optional] [default to "TRUSTED"]
 **DpopBoundAccessTokens** | Pointer to **bool** | Indicates that the client application uses Demonstrating Proof-of-Possession (DPoP) for token requests. If &#x60;true&#x60;, the authorization server rejects token requests from this client that don&#39;t contain the DPoP header. &gt; **Note:** If &#x60;dpop_bound_access_tokens&#x60; is true, then &#x60;client_credentials&#x60; and &#x60;implicit&#x60; aren&#39;t allowed in &#x60;grant_types&#x60;.  | [optional] [default to false]
-**GrantTypes** | **[]string** |  | 
+**GrantTypes** | Pointer to **[]string** |  | [optional] 
 **IdTokenEncryptedResponseAlg** | Pointer to **string** | JWE alg algorithm for encrypting the ID token issued to this client. If this is requested, the response is signed, and then encrypted with the result being a nested JWT. The default, if omitted, is that no encryption is performed. See the [Application Public Keys API](/openapi/okta-management/management/applicationssopublickeys/) for more information on encryption keys. See [Key management](https://developer.okta.com/docs/guides/key-management/main/) for more information on how encryption keys are used. | [optional] 
 **IdpInitiatedLogin** | Pointer to [**OpenIdConnectApplicationIdpInitiatedLogin**](OpenIdConnectApplicationIdpInitiatedLogin.md) |  | [optional] 
 **InitiateLoginUri** | Pointer to **string** | URL string that a third party can use to initiate the sign-in flow by the client | [optional] 
@@ -37,7 +37,7 @@ Name | Type | Description | Notes
 
 ### NewOpenIdConnectApplicationSettingsClient
 
-`func NewOpenIdConnectApplicationSettingsClient(grantTypes []string, ) *OpenIdConnectApplicationSettingsClient`
+`func NewOpenIdConnectApplicationSettingsClient() *OpenIdConnectApplicationSettingsClient`
 
 NewOpenIdConnectApplicationSettingsClient instantiates a new OpenIdConnectApplicationSettingsClient object
 This constructor will assign default values to properties that have it defined,
@@ -296,6 +296,11 @@ and a boolean to check if the value has been set.
 
 SetGrantTypes sets GrantTypes field to given value.
 
+### HasGrantTypes
+
+`func (o *OpenIdConnectApplicationSettingsClient) HasGrantTypes() bool`
+
+HasGrantTypes returns a boolean if a field has been set.
 
 ### GetIdTokenEncryptedResponseAlg
 

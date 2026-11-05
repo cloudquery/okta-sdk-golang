@@ -74113,16 +74113,14 @@ components:
       properties:
         userNameExpression:
           type: string
-          description: For `usernameFormat=CUSTOM`, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta
-        usernameFormat:
+          description: For `userNameFormat=CUSTOM`, specifies the Okta Expression Language statement for a username format that imported users use to sign in to Okta
+        userNameFormat:
           type: string
           description: Determines the username format when users sign in to Okta
           default: EMAIL
           enum:
             - EMAIL
             - CUSTOM
-      required:
-        - usernameFormat
     InactivityPolicyRuleCondition:
       type: object
       properties:
@@ -79049,8 +79047,6 @@ components:
               For example, if `https://redirect-*-domain.example.com/oidc/redirect` is configured as a redirect URI, then `https://redirect-1-domain.example.com/oidc/redirect` and `https://redirect-sub-domain.example.com/oidc/redirect` match, but `https://redirect-1.sub-domain.example.com/oidc/redirect` doesn't match.
               Only the `https` URI scheme can use wildcard redirect URIs.
               > **Note:** The use of wildcard subdomains is discouraged as an insecure practice, since it may allow malicious actors to have tokens or authorization codes sent to unexpected or attacker-controlled pages. Exercise caution if you decide to include a wildcard redirect URI in your configuration.
-      required:
-        - grant_types
     OpenIdConnectApplicationSettingsClientKeys:
       description: A [JSON Web Key Set](https://tools.ietf.org/html/rfc7517#section-5) for validating JWTs presented to Okta or for encrypting ID tokens minted by Okta for the client
       type: object
@@ -86291,11 +86287,6 @@ components:
         userNameSelector:
           type: string
           description: CSS selector for the **Username** field in the sign-in form (for three-field SWA apps with the `template_swa3field` app name definition)
-      required:
-        - buttonField
-        - passwordField
-        - usernameField
-        - url
     TacAuthenticatorEnrollment:
       type: object
       properties:
