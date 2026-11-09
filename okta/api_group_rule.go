@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -125,9 +125,7 @@ type GroupRuleAPI interface {
 			ReplaceGroupRule Replace a group rule
 
 			Replaces a group rule
-		> **Notes:** You can only update rules with a group whose status is set to `INACTIVE`.
-		>
-		> You currently can't update the `actions` section.
+		> **Note:** You can only update group rules that have their status set to `INACTIVE`.
 
 			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 			@param groupRuleId The `id` of the group rule
@@ -794,7 +792,7 @@ type ApiGetGroupRuleRequest struct {
 	retryCount  int32
 }
 
-// If specified as &#x60;groupIdToGroupNameMap&#x60;, then show group names
+// If specified, returns the mapping of group IDs to group names in the &#x60;_embedded&#x60; object.
 func (r ApiGetGroupRuleRequest) Expand(expand string) ApiGetGroupRuleRequest {
 	r.expand = &expand
 	return r
@@ -990,7 +988,7 @@ func (r ApiListGroupRulesRequest) Search(search string) ApiListGroupRulesRequest
 	return r
 }
 
-// If specified as &#x60;groupIdToGroupNameMap&#x60;, then displays group names
+// If specified, returns the mapping of group IDs to group names in the &#x60;_embedded&#x60; object.
 func (r ApiListGroupRulesRequest) Expand(expand string) ApiListGroupRulesRequest {
 	r.expand = &expand
 	return r
@@ -1173,9 +1171,7 @@ func (r ApiReplaceGroupRuleRequest) Execute() (*GroupRule, *APIResponse, error) 
 ReplaceGroupRule Replace a group rule
 
 Replaces a group rule
-> **Notes:** You can only update rules with a group whose status is set to `INACTIVE`.
->
-> You currently can't update the `actions` section.
+> **Note:** You can only update group rules that have their status set to `INACTIVE`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param groupRuleId The `id` of the group rule

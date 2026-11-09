@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -36,7 +36,7 @@ var _ MappedNullable = &ProfileEnrollmentPolicyRule{}
 type ProfileEnrollmentPolicyRule struct {
 	PolicyRule
 	Actions *ProfileEnrollmentPolicyRuleActions `json:"actions,omitempty"`
-	// Policy rule conditions aren't supported for this policy type
+	// Policy rule conditions aren't supported for this policy type.
 	Conditions           NullableString `json:"conditions,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -172,7 +172,7 @@ func (o ProfileEnrollmentPolicyRule) ToMap() (map[string]interface{}, error) {
 func (o *ProfileEnrollmentPolicyRule) UnmarshalJSON(data []byte) (err error) {
 	type ProfileEnrollmentPolicyRuleWithoutEmbeddedStruct struct {
 		Actions *ProfileEnrollmentPolicyRuleActions `json:"actions,omitempty"`
-		// Policy rule conditions aren't supported for this policy type
+		// Policy rule conditions aren't supported for this policy type.
 		Conditions NullableString `json:"conditions,omitempty"`
 	}
 

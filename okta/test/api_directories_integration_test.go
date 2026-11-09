@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -27,7 +27,7 @@ import (
 	"context"
 	"testing"
 
-	openapiclient "github.com/okta/okta-sdk-golang/v6/okta"
+	openapiclient "github.com/okta/okta-sdk-golang/v8/okta"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -38,13 +38,58 @@ func Test_okta_DirectoriesIntegrationAPIService(t *testing.T) {
 	require.Nil(t, err)
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test DirectoriesIntegrationAPIService UpdateADGroupMembership", func(t *testing.T) {
+	t.Run("Test DirectoriesIntegrationAPIService GetGroupAttributeQueryResult", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var appInstanceId string
+		var groupId string
+		var resultId string
+
+		resp, httpRes, err := apiClient.DirectoriesIntegrationAPI.GetGroupAttributeQueryResult(context.Background(), appInstanceId, groupId, resultId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test DirectoriesIntegrationAPIService InvokeRemoteScript", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var appInstanceId string
 
-		httpRes, err := apiClient.DirectoriesIntegrationAPI.UpdateADGroupMembership(context.Background(), appInstanceId).Execute()
+		resp, httpRes, err := apiClient.DirectoriesIntegrationAPI.InvokeRemoteScript(context.Background(), appInstanceId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test DirectoriesIntegrationAPIService SubmitGroupAttributeQuery", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var appInstanceId string
+		var groupId string
+
+		resp, httpRes, err := apiClient.DirectoriesIntegrationAPI.SubmitGroupAttributeQuery(context.Background(), appInstanceId, groupId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test DirectoriesIntegrationAPIService UpdateGroupMembership", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var appInstanceId string
+
+		httpRes, err := apiClient.DirectoriesIntegrationAPI.UpdateGroupMembership(context.Background(), appInstanceId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)

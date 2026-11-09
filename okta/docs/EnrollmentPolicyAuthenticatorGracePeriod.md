@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | Pointer to **string** | Grace period type | [optional] 
+**Type** | Pointer to **string** | Grace period type  * &#x60;BY_DATE_TIME&#x60;: The grace period is defined by a specific date and time. * &#x60;BY_SKIP_COUNT&#x60;: The grace period is defined by the number of times the user can skip enrolling the corresponding authenticator. | [optional] 
 
 ## Methods
 

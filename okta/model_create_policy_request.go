@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -32,10 +32,10 @@ import (
 type CreatePolicyRequest struct {
 	AccessPolicy                  *AccessPolicy
 	AuthenticatorEnrollmentPolicy *AuthenticatorEnrollmentPolicy
-	DeviceSignalCollectionPolicy  *DeviceSignalCollectionPolicy
 	OktaSignOnPolicy              *OktaSignOnPolicy
 	PasswordPolicy                *PasswordPolicy
 	ProfileEnrollmentPolicy       *ProfileEnrollmentPolicy
+	UserIdentificationPolicy      *UserIdentificationPolicy
 }
 
 // AccessPolicyAsCreatePolicyRequest is a convenience function that returns AccessPolicy wrapped in CreatePolicyRequest
@@ -49,13 +49,6 @@ func AccessPolicyAsCreatePolicyRequest(v *AccessPolicy) CreatePolicyRequest {
 func AuthenticatorEnrollmentPolicyAsCreatePolicyRequest(v *AuthenticatorEnrollmentPolicy) CreatePolicyRequest {
 	return CreatePolicyRequest{
 		AuthenticatorEnrollmentPolicy: v,
-	}
-}
-
-// DeviceSignalCollectionPolicyAsCreatePolicyRequest is a convenience function that returns DeviceSignalCollectionPolicy wrapped in CreatePolicyRequest
-func DeviceSignalCollectionPolicyAsCreatePolicyRequest(v *DeviceSignalCollectionPolicy) CreatePolicyRequest {
-	return CreatePolicyRequest{
-		DeviceSignalCollectionPolicy: v,
 	}
 }
 
@@ -80,6 +73,13 @@ func ProfileEnrollmentPolicyAsCreatePolicyRequest(v *ProfileEnrollmentPolicy) Cr
 	}
 }
 
+// UserIdentificationPolicyAsCreatePolicyRequest is a convenience function that returns UserIdentificationPolicy wrapped in CreatePolicyRequest
+func UserIdentificationPolicyAsCreatePolicyRequest(v *UserIdentificationPolicy) CreatePolicyRequest {
+	return CreatePolicyRequest{
+		UserIdentificationPolicy: v,
+	}
+}
+
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 	var err error
@@ -90,8 +90,11 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
+	// Get discriminator value, treating nil/missing as empty string for comparison
+	discriminatorValue, _ := jsonDict["type"].(string)
+
 	// check if the discriminator value is 'ACCESS_POLICY'
-	if jsonDict["type"] == "ACCESS_POLICY" {
+	if discriminatorValue == "ACCESS_POLICY" {
 		// try to unmarshal JSON data into AccessPolicy
 		err = json.Unmarshal(data, &dst.AccessPolicy)
 		if err == nil {
@@ -102,20 +105,8 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 		}
 	}
 
-	// check if the discriminator value is 'DEVICE_SIGNAL_COLLECTION'
-	if jsonDict["type"] == "DEVICE_SIGNAL_COLLECTION" {
-		// try to unmarshal JSON data into DeviceSignalCollectionPolicy
-		err = json.Unmarshal(data, &dst.DeviceSignalCollectionPolicy)
-		if err == nil {
-			return nil // data stored in dst.DeviceSignalCollectionPolicy, return on the first match
-		} else {
-			dst.DeviceSignalCollectionPolicy = nil
-			return fmt.Errorf("failed to unmarshal CreatePolicyRequest as DeviceSignalCollectionPolicy: %s", err.Error())
-		}
-	}
-
 	// check if the discriminator value is 'MFA_ENROLL'
-	if jsonDict["type"] == "MFA_ENROLL" {
+	if discriminatorValue == "MFA_ENROLL" {
 		// try to unmarshal JSON data into AuthenticatorEnrollmentPolicy
 		err = json.Unmarshal(data, &dst.AuthenticatorEnrollmentPolicy)
 		if err == nil {
@@ -127,7 +118,7 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'OKTA_SIGN_ON'
-	if jsonDict["type"] == "OKTA_SIGN_ON" {
+	if discriminatorValue == "OKTA_SIGN_ON" {
 		// try to unmarshal JSON data into OktaSignOnPolicy
 		err = json.Unmarshal(data, &dst.OktaSignOnPolicy)
 		if err == nil {
@@ -139,7 +130,7 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'PASSWORD'
-	if jsonDict["type"] == "PASSWORD" {
+	if discriminatorValue == "PASSWORD" {
 		// try to unmarshal JSON data into PasswordPolicy
 		err = json.Unmarshal(data, &dst.PasswordPolicy)
 		if err == nil {
@@ -151,7 +142,7 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'PROFILE_ENROLLMENT'
-	if jsonDict["type"] == "PROFILE_ENROLLMENT" {
+	if discriminatorValue == "PROFILE_ENROLLMENT" {
 		// try to unmarshal JSON data into ProfileEnrollmentPolicy
 		err = json.Unmarshal(data, &dst.ProfileEnrollmentPolicy)
 		if err == nil {
@@ -162,6 +153,28 @@ func (dst *CreatePolicyRequest) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	// check if the discriminator value is 'USER_IDENTIFICATION'
+	if discriminatorValue == "USER_IDENTIFICATION" {
+		// try to unmarshal JSON data into UserIdentificationPolicy
+		err = json.Unmarshal(data, &dst.UserIdentificationPolicy)
+		if err == nil {
+			return nil // data stored in dst.UserIdentificationPolicy, return on the first match
+		} else {
+			dst.UserIdentificationPolicy = nil
+			return fmt.Errorf("failed to unmarshal CreatePolicyRequest as UserIdentificationPolicy: %s", err.Error())
+		}
+	}
+
+	// If discriminator value is empty/missing, default to the last mapped model (typically the most common type)
+	if discriminatorValue == "" {
+		err = json.Unmarshal(data, &dst.UserIdentificationPolicy)
+		if err == nil {
+			return nil
+		}
+		dst.UserIdentificationPolicy = nil
+	}
+
+	// No match found or unmarshal failed - return nil to allow partial unmarshalling
 	return nil
 }
 
@@ -175,10 +188,6 @@ func (src CreatePolicyRequest) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.AuthenticatorEnrollmentPolicy)
 	}
 
-	if src.DeviceSignalCollectionPolicy != nil {
-		return json.Marshal(&src.DeviceSignalCollectionPolicy)
-	}
-
 	if src.OktaSignOnPolicy != nil {
 		return json.Marshal(&src.OktaSignOnPolicy)
 	}
@@ -189,6 +198,10 @@ func (src CreatePolicyRequest) MarshalJSON() ([]byte, error) {
 
 	if src.ProfileEnrollmentPolicy != nil {
 		return json.Marshal(&src.ProfileEnrollmentPolicy)
+	}
+
+	if src.UserIdentificationPolicy != nil {
+		return json.Marshal(&src.UserIdentificationPolicy)
 	}
 
 	return nil, nil // no data in oneOf schemas
@@ -207,10 +220,6 @@ func (obj *CreatePolicyRequest) GetActualInstance() interface{} {
 		return obj.AuthenticatorEnrollmentPolicy
 	}
 
-	if obj.DeviceSignalCollectionPolicy != nil {
-		return obj.DeviceSignalCollectionPolicy
-	}
-
 	if obj.OktaSignOnPolicy != nil {
 		return obj.OktaSignOnPolicy
 	}
@@ -221,6 +230,10 @@ func (obj *CreatePolicyRequest) GetActualInstance() interface{} {
 
 	if obj.ProfileEnrollmentPolicy != nil {
 		return obj.ProfileEnrollmentPolicy
+	}
+
+	if obj.UserIdentificationPolicy != nil {
+		return obj.UserIdentificationPolicy
 	}
 
 	// all schemas are nil
@@ -237,10 +250,6 @@ func (obj CreatePolicyRequest) GetActualInstanceValue() interface{} {
 		return *obj.AuthenticatorEnrollmentPolicy
 	}
 
-	if obj.DeviceSignalCollectionPolicy != nil {
-		return *obj.DeviceSignalCollectionPolicy
-	}
-
 	if obj.OktaSignOnPolicy != nil {
 		return *obj.OktaSignOnPolicy
 	}
@@ -251,6 +260,10 @@ func (obj CreatePolicyRequest) GetActualInstanceValue() interface{} {
 
 	if obj.ProfileEnrollmentPolicy != nil {
 		return *obj.ProfileEnrollmentPolicy
+	}
+
+	if obj.UserIdentificationPolicy != nil {
+		return *obj.UserIdentificationPolicy
 	}
 
 	// all schemas are nil

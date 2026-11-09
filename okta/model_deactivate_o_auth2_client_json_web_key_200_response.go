@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -58,8 +58,11 @@ func (dst *DeactivateOAuth2ClientJsonWebKey200Response) UnmarshalJSON(data []byt
 		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
+	// Get discriminator value, treating nil/missing as empty string for comparison
+	discriminatorValue, _ := jsonDict["kty"].(string)
+
 	// check if the discriminator value is 'EC'
-	if jsonDict["kty"] == "EC" {
+	if discriminatorValue == "EC" {
 		// try to unmarshal JSON data into OAuth2ClientJsonWebKeyECResponse
 		err = json.Unmarshal(data, &dst.OAuth2ClientJsonWebKeyECResponse)
 		if err == nil {
@@ -71,7 +74,7 @@ func (dst *DeactivateOAuth2ClientJsonWebKey200Response) UnmarshalJSON(data []byt
 	}
 
 	// check if the discriminator value is 'RSA'
-	if jsonDict["kty"] == "RSA" {
+	if discriminatorValue == "RSA" {
 		// try to unmarshal JSON data into OAuth2ClientJsonWebKeyRsaResponse
 		err = json.Unmarshal(data, &dst.OAuth2ClientJsonWebKeyRsaResponse)
 		if err == nil {
@@ -82,6 +85,16 @@ func (dst *DeactivateOAuth2ClientJsonWebKey200Response) UnmarshalJSON(data []byt
 		}
 	}
 
+	// If discriminator value is empty/missing, default to the last mapped model (typically the most common type)
+	if discriminatorValue == "" {
+		err = json.Unmarshal(data, &dst.OAuth2ClientJsonWebKeyRsaResponse)
+		if err == nil {
+			return nil
+		}
+		dst.OAuth2ClientJsonWebKeyRsaResponse = nil
+	}
+
+	// No match found or unmarshal failed - return nil to allow partial unmarshalling
 	return nil
 }
 

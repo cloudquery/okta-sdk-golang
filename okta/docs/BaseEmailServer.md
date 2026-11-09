@@ -5,10 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Alias** | Pointer to **string** | Human-readable name for your SMTP server | [optional] 
-**Enabled** | Pointer to **bool** | If &#x60;true&#x60;, routes all email traffic through your SMTP server | [optional] 
+**Enabled** | Pointer to **bool** | If &#x60;true&#x60;, all email traffic is routed through your SMTP server | [optional] 
 **Host** | Pointer to **string** | Hostname or IP address of your SMTP server | [optional] 
+**Id** | Pointer to **string** | ID of your SMTP server | [optional] [readonly] 
 **Port** | Pointer to **int32** | Port number of your SMTP server | [optional] 
-**Username** | Pointer to **string** | Username used to access your SMTP server | [optional] 
+**Username** | Pointer to **string** | Username that&#39;s used to access your SMTP server | [optional] 
 
 ## Methods
 
@@ -103,6 +104,31 @@ SetHost sets Host field to given value.
 `func (o *BaseEmailServer) HasHost() bool`
 
 HasHost returns a boolean if a field has been set.
+
+### GetId
+
+`func (o *BaseEmailServer) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *BaseEmailServer) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *BaseEmailServer) SetId(v string)`
+
+SetId sets Id field to given value.
+
+### HasId
+
+`func (o *BaseEmailServer) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetPort
 

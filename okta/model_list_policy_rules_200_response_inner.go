@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -30,15 +30,17 @@ import (
 
 // ListPolicyRules200ResponseInner - struct for ListPolicyRules200ResponseInner
 type ListPolicyRules200ResponseInner struct {
-	AccessPolicyRule                  *AccessPolicyRule
-	AuthenticatorEnrollmentPolicyRule *AuthenticatorEnrollmentPolicyRule
-	DeviceSignalCollectionPolicyRule  *DeviceSignalCollectionPolicyRule
-	EntityRiskPolicyRule              *EntityRiskPolicyRule
-	IdpDiscoveryPolicyRule            *IdpDiscoveryPolicyRule
-	OktaSignOnPolicyRule              *OktaSignOnPolicyRule
-	PasswordPolicyRule                *PasswordPolicyRule
-	PostAuthSessionPolicyRule         *PostAuthSessionPolicyRule
-	ProfileEnrollmentPolicyRule       *ProfileEnrollmentPolicyRule
+	AccessPolicyRule                    *AccessPolicyRule
+	AuthenticatorEnrollmentPolicyRule   *AuthenticatorEnrollmentPolicyRule
+	ClientUpdatePolicyRule              *ClientUpdatePolicyRule
+	EntityRiskPolicyRule                *EntityRiskPolicyRule
+	IdpDiscoveryPolicyRule              *IdpDiscoveryPolicyRule
+	OktaSignOnPolicyRule                *OktaSignOnPolicyRule
+	PasswordPolicyRule                  *PasswordPolicyRule
+	PostAuthSessionPolicyRule           *PostAuthSessionPolicyRule
+	ProfileEnrollmentPolicyRule         *ProfileEnrollmentPolicyRule
+	SessionViolationDetectionPolicyRule *SessionViolationDetectionPolicyRule
+	UserIdentificationPolicyRule        *UserIdentificationPolicyRule
 }
 
 // AccessPolicyRuleAsListPolicyRules200ResponseInner is a convenience function that returns AccessPolicyRule wrapped in ListPolicyRules200ResponseInner
@@ -55,10 +57,10 @@ func AuthenticatorEnrollmentPolicyRuleAsListPolicyRules200ResponseInner(v *Authe
 	}
 }
 
-// DeviceSignalCollectionPolicyRuleAsListPolicyRules200ResponseInner is a convenience function that returns DeviceSignalCollectionPolicyRule wrapped in ListPolicyRules200ResponseInner
-func DeviceSignalCollectionPolicyRuleAsListPolicyRules200ResponseInner(v *DeviceSignalCollectionPolicyRule) ListPolicyRules200ResponseInner {
+// ClientUpdatePolicyRuleAsListPolicyRules200ResponseInner is a convenience function that returns ClientUpdatePolicyRule wrapped in ListPolicyRules200ResponseInner
+func ClientUpdatePolicyRuleAsListPolicyRules200ResponseInner(v *ClientUpdatePolicyRule) ListPolicyRules200ResponseInner {
 	return ListPolicyRules200ResponseInner{
-		DeviceSignalCollectionPolicyRule: v,
+		ClientUpdatePolicyRule: v,
 	}
 }
 
@@ -104,6 +106,20 @@ func ProfileEnrollmentPolicyRuleAsListPolicyRules200ResponseInner(v *ProfileEnro
 	}
 }
 
+// SessionViolationDetectionPolicyRuleAsListPolicyRules200ResponseInner is a convenience function that returns SessionViolationDetectionPolicyRule wrapped in ListPolicyRules200ResponseInner
+func SessionViolationDetectionPolicyRuleAsListPolicyRules200ResponseInner(v *SessionViolationDetectionPolicyRule) ListPolicyRules200ResponseInner {
+	return ListPolicyRules200ResponseInner{
+		SessionViolationDetectionPolicyRule: v,
+	}
+}
+
+// UserIdentificationPolicyRuleAsListPolicyRules200ResponseInner is a convenience function that returns UserIdentificationPolicyRule wrapped in ListPolicyRules200ResponseInner
+func UserIdentificationPolicyRuleAsListPolicyRules200ResponseInner(v *UserIdentificationPolicyRule) ListPolicyRules200ResponseInner {
+	return ListPolicyRules200ResponseInner{
+		UserIdentificationPolicyRule: v,
+	}
+}
+
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	var err error
@@ -114,8 +130,11 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
+	// Get discriminator value, treating nil/missing as empty string for comparison
+	discriminatorValue, _ := jsonDict["type"].(string)
+
 	// check if the discriminator value is 'ACCESS_POLICY'
-	if jsonDict["type"] == "ACCESS_POLICY" {
+	if discriminatorValue == "ACCESS_POLICY" {
 		// try to unmarshal JSON data into AccessPolicyRule
 		err = json.Unmarshal(data, &dst.AccessPolicyRule)
 		if err == nil {
@@ -126,20 +145,20 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 		}
 	}
 
-	// check if the discriminator value is 'DEVICE_SIGNAL_COLLECTION'
-	if jsonDict["type"] == "DEVICE_SIGNAL_COLLECTION" {
-		// try to unmarshal JSON data into DeviceSignalCollectionPolicyRule
-		err = json.Unmarshal(data, &dst.DeviceSignalCollectionPolicyRule)
+	// check if the discriminator value is 'CLIENT_UPDATE'
+	if discriminatorValue == "CLIENT_UPDATE" {
+		// try to unmarshal JSON data into ClientUpdatePolicyRule
+		err = json.Unmarshal(data, &dst.ClientUpdatePolicyRule)
 		if err == nil {
-			return nil // data stored in dst.DeviceSignalCollectionPolicyRule, return on the first match
+			return nil // data stored in dst.ClientUpdatePolicyRule, return on the first match
 		} else {
-			dst.DeviceSignalCollectionPolicyRule = nil
-			return fmt.Errorf("failed to unmarshal ListPolicyRules200ResponseInner as DeviceSignalCollectionPolicyRule: %s", err.Error())
+			dst.ClientUpdatePolicyRule = nil
+			return fmt.Errorf("failed to unmarshal ListPolicyRules200ResponseInner as ClientUpdatePolicyRule: %s", err.Error())
 		}
 	}
 
 	// check if the discriminator value is 'ENTITY_RISK'
-	if jsonDict["type"] == "ENTITY_RISK" {
+	if discriminatorValue == "ENTITY_RISK" {
 		// try to unmarshal JSON data into EntityRiskPolicyRule
 		err = json.Unmarshal(data, &dst.EntityRiskPolicyRule)
 		if err == nil {
@@ -151,7 +170,7 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'IDP_DISCOVERY'
-	if jsonDict["type"] == "IDP_DISCOVERY" {
+	if discriminatorValue == "IDP_DISCOVERY" {
 		// try to unmarshal JSON data into IdpDiscoveryPolicyRule
 		err = json.Unmarshal(data, &dst.IdpDiscoveryPolicyRule)
 		if err == nil {
@@ -163,7 +182,7 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'MFA_ENROLL'
-	if jsonDict["type"] == "MFA_ENROLL" {
+	if discriminatorValue == "MFA_ENROLL" {
 		// try to unmarshal JSON data into AuthenticatorEnrollmentPolicyRule
 		err = json.Unmarshal(data, &dst.AuthenticatorEnrollmentPolicyRule)
 		if err == nil {
@@ -175,7 +194,7 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'PASSWORD'
-	if jsonDict["type"] == "PASSWORD" {
+	if discriminatorValue == "PASSWORD" {
 		// try to unmarshal JSON data into PasswordPolicyRule
 		err = json.Unmarshal(data, &dst.PasswordPolicyRule)
 		if err == nil {
@@ -187,7 +206,7 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'POST_AUTH_SESSION'
-	if jsonDict["type"] == "POST_AUTH_SESSION" {
+	if discriminatorValue == "POST_AUTH_SESSION" {
 		// try to unmarshal JSON data into PostAuthSessionPolicyRule
 		err = json.Unmarshal(data, &dst.PostAuthSessionPolicyRule)
 		if err == nil {
@@ -199,7 +218,7 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 	}
 
 	// check if the discriminator value is 'PROFILE_ENROLLMENT'
-	if jsonDict["type"] == "PROFILE_ENROLLMENT" {
+	if discriminatorValue == "PROFILE_ENROLLMENT" {
 		// try to unmarshal JSON data into ProfileEnrollmentPolicyRule
 		err = json.Unmarshal(data, &dst.ProfileEnrollmentPolicyRule)
 		if err == nil {
@@ -210,8 +229,20 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	// check if the discriminator value is 'SESSION_VIOLATION_DETECTION'
+	if discriminatorValue == "SESSION_VIOLATION_DETECTION" {
+		// try to unmarshal JSON data into SessionViolationDetectionPolicyRule
+		err = json.Unmarshal(data, &dst.SessionViolationDetectionPolicyRule)
+		if err == nil {
+			return nil // data stored in dst.SessionViolationDetectionPolicyRule, return on the first match
+		} else {
+			dst.SessionViolationDetectionPolicyRule = nil
+			return fmt.Errorf("failed to unmarshal ListPolicyRules200ResponseInner as SessionViolationDetectionPolicyRule: %s", err.Error())
+		}
+	}
+
 	// check if the discriminator value is 'SIGN_ON'
-	if jsonDict["type"] == "SIGN_ON" {
+	if discriminatorValue == "SIGN_ON" {
 		// try to unmarshal JSON data into OktaSignOnPolicyRule
 		err = json.Unmarshal(data, &dst.OktaSignOnPolicyRule)
 		if err == nil {
@@ -222,6 +253,28 @@ func (dst *ListPolicyRules200ResponseInner) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	// check if the discriminator value is 'USER_IDENTIFICATION'
+	if discriminatorValue == "USER_IDENTIFICATION" {
+		// try to unmarshal JSON data into UserIdentificationPolicyRule
+		err = json.Unmarshal(data, &dst.UserIdentificationPolicyRule)
+		if err == nil {
+			return nil // data stored in dst.UserIdentificationPolicyRule, return on the first match
+		} else {
+			dst.UserIdentificationPolicyRule = nil
+			return fmt.Errorf("failed to unmarshal ListPolicyRules200ResponseInner as UserIdentificationPolicyRule: %s", err.Error())
+		}
+	}
+
+	// If discriminator value is empty/missing, default to the last mapped model (typically the most common type)
+	if discriminatorValue == "" {
+		err = json.Unmarshal(data, &dst.UserIdentificationPolicyRule)
+		if err == nil {
+			return nil
+		}
+		dst.UserIdentificationPolicyRule = nil
+	}
+
+	// No match found or unmarshal failed - return nil to allow partial unmarshalling
 	return nil
 }
 
@@ -235,8 +288,8 @@ func (src ListPolicyRules200ResponseInner) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.AuthenticatorEnrollmentPolicyRule)
 	}
 
-	if src.DeviceSignalCollectionPolicyRule != nil {
-		return json.Marshal(&src.DeviceSignalCollectionPolicyRule)
+	if src.ClientUpdatePolicyRule != nil {
+		return json.Marshal(&src.ClientUpdatePolicyRule)
 	}
 
 	if src.EntityRiskPolicyRule != nil {
@@ -263,6 +316,14 @@ func (src ListPolicyRules200ResponseInner) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.ProfileEnrollmentPolicyRule)
 	}
 
+	if src.SessionViolationDetectionPolicyRule != nil {
+		return json.Marshal(&src.SessionViolationDetectionPolicyRule)
+	}
+
+	if src.UserIdentificationPolicyRule != nil {
+		return json.Marshal(&src.UserIdentificationPolicyRule)
+	}
+
 	return nil, nil // no data in oneOf schemas
 }
 
@@ -279,8 +340,8 @@ func (obj *ListPolicyRules200ResponseInner) GetActualInstance() interface{} {
 		return obj.AuthenticatorEnrollmentPolicyRule
 	}
 
-	if obj.DeviceSignalCollectionPolicyRule != nil {
-		return obj.DeviceSignalCollectionPolicyRule
+	if obj.ClientUpdatePolicyRule != nil {
+		return obj.ClientUpdatePolicyRule
 	}
 
 	if obj.EntityRiskPolicyRule != nil {
@@ -307,6 +368,14 @@ func (obj *ListPolicyRules200ResponseInner) GetActualInstance() interface{} {
 		return obj.ProfileEnrollmentPolicyRule
 	}
 
+	if obj.SessionViolationDetectionPolicyRule != nil {
+		return obj.SessionViolationDetectionPolicyRule
+	}
+
+	if obj.UserIdentificationPolicyRule != nil {
+		return obj.UserIdentificationPolicyRule
+	}
+
 	// all schemas are nil
 	return nil
 }
@@ -321,8 +390,8 @@ func (obj ListPolicyRules200ResponseInner) GetActualInstanceValue() interface{} 
 		return *obj.AuthenticatorEnrollmentPolicyRule
 	}
 
-	if obj.DeviceSignalCollectionPolicyRule != nil {
-		return *obj.DeviceSignalCollectionPolicyRule
+	if obj.ClientUpdatePolicyRule != nil {
+		return *obj.ClientUpdatePolicyRule
 	}
 
 	if obj.EntityRiskPolicyRule != nil {
@@ -347,6 +416,14 @@ func (obj ListPolicyRules200ResponseInner) GetActualInstanceValue() interface{} 
 
 	if obj.ProfileEnrollmentPolicyRule != nil {
 		return *obj.ProfileEnrollmentPolicyRule
+	}
+
+	if obj.SessionViolationDetectionPolicyRule != nil {
+		return *obj.SessionViolationDetectionPolicyRule
+	}
+
+	if obj.UserIdentificationPolicyRule != nil {
+		return *obj.UserIdentificationPolicyRule
 	}
 
 	// all schemas are nil

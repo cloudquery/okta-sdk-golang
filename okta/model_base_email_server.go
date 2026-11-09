@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -34,13 +34,15 @@ var _ MappedNullable = &BaseEmailServer{}
 type BaseEmailServer struct {
 	// Human-readable name for your SMTP server
 	Alias *string `json:"alias,omitempty"`
-	// If `true`, routes all email traffic through your SMTP server
+	// If `true`, all email traffic is routed through your SMTP server
 	Enabled *bool `json:"enabled,omitempty"`
 	// Hostname or IP address of your SMTP server
 	Host *string `json:"host,omitempty"`
+	// ID of your SMTP server
+	Id *string `json:"id,omitempty"`
 	// Port number of your SMTP server
 	Port *int32 `json:"port,omitempty"`
-	// Username used to access your SMTP server
+	// Username that's used to access your SMTP server
 	Username             *string `json:"username,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -160,6 +162,38 @@ func (o *BaseEmailServer) SetHost(v string) {
 	o.Host = &v
 }
 
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *BaseEmailServer) GetId() string {
+	if o == nil || IsNil(o.Id) {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BaseEmailServer) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *BaseEmailServer) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *BaseEmailServer) SetId(v string) {
+	o.Id = &v
+}
+
 // GetPort returns the Port field value if set, zero value otherwise.
 func (o *BaseEmailServer) GetPort() int32 {
 	if o == nil || IsNil(o.Port) {
@@ -243,6 +277,9 @@ func (o BaseEmailServer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Host) {
 		toSerialize["host"] = o.Host
 	}
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	if !IsNil(o.Port) {
 		toSerialize["port"] = o.Port
 	}
@@ -274,6 +311,7 @@ func (o *BaseEmailServer) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "alias")
 		delete(additionalProperties, "enabled")
 		delete(additionalProperties, "host")
+		delete(additionalProperties, "id")
 		delete(additionalProperties, "port")
 		delete(additionalProperties, "username")
 		o.AdditionalProperties = additionalProperties

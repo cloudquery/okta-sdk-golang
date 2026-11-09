@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -30,7 +30,7 @@ import (
 // checks if the OAuth2ClientJsonEncryptionKeyResponse type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OAuth2ClientJsonEncryptionKeyResponse{}
 
-// OAuth2ClientJsonEncryptionKeyResponse <x-lifecycle-container><x-lifecycle class=\"ea\"></x-lifecycle></x-lifecycle-container>A [JSON Web Key (JWK)](https://tools.ietf.org/html/rfc7517) is a JSON representation of a cryptographic key. Okta uses an encryption key to encrypt an ID token JWT minted by the org authorization server or custom authorization server. Okta supports only RSA keys for encrypting tokens.
+// OAuth2ClientJsonEncryptionKeyResponse A [JSON Web Key (JWK)](https://tools.ietf.org/html/rfc7517) is a JSON representation of a cryptographic key. Okta uses an encryption key to encrypt an ID token JWT minted by the org authorization server or custom authorization server. Okta supports only RSA keys for encrypting tokens.
 type OAuth2ClientJsonEncryptionKeyResponse struct {
 	// RSA key value (exponent) for key binding
 	E *string `json:"e,omitempty"`
@@ -46,7 +46,7 @@ type OAuth2ClientJsonEncryptionKeyResponse struct {
 	Status *string `json:"status,omitempty"`
 	// Timestamp when the OAuth 2.0 client JSON Web Key was created
 	Created *string `json:"created,omitempty"`
-	// The unique ID of the OAuth Client JSON Web Key
+	// The unique ID of the OAuth client JSON Web Key
 	Id *string `json:"id,omitempty"`
 	// Timestamp when the OAuth 2.0 client JSON Web Key was updated
 	LastUpdated          *string                 `json:"lastUpdated,omitempty"`

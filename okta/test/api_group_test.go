@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -27,7 +27,7 @@ import (
 	"context"
 	"testing"
 
-	openapiclient "github.com/okta/okta-sdk-golang/v6/okta"
+	openapiclient "github.com/okta/okta-sdk-golang/v8/okta"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -98,6 +98,21 @@ func Test_okta_GroupAPIService(t *testing.T) {
 		var groupId string
 
 		resp, httpRes, err := apiClient.GroupAPI.ListAssignedApplicationsForGroup(context.Background(), groupId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test GroupAPIService ListGroupRulesForUserInGroup", func(t *testing.T) {
+
+		t.Skip("skip test") // remove to run test
+
+		var groupId string
+		var userId string
+
+		resp, httpRes, err := apiClient.GroupAPI.ListGroupRulesForUserInGroup(context.Background(), groupId, userId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

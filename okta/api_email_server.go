@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -36,18 +36,20 @@ import (
 type EmailServerAPI interface {
 
 	/*
-		CreateEmailServer Create a custom SMTP server
+			CreateEmailServer Create a custom SMTP server
 
-		Creates a custom email SMTP server configuration for your org
+			Creates a custom email SMTP server configuration for your org.
 
-		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@return ApiCreateEmailServerRequest
+		For more information about configuring the OAuth 2.0 authentication methods, see [Custom email providers with OAuth 2.0](https://developer.okta.com/docs/guides/custom-smtp/main/).
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiCreateEmailServerRequest
 	*/
 	CreateEmailServer(ctx context.Context) ApiCreateEmailServerRequest
 
 	// CreateEmailServerExecute executes the request
-	//  @return EmailServerResponse
-	CreateEmailServerExecute(r ApiCreateEmailServerRequest) (*EmailServerResponse, *APIResponse, error)
+	//  @return BaseEmailServer
+	CreateEmailServerExecute(r ApiCreateEmailServerRequest) (*BaseEmailServer, *APIResponse, error)
 
 	/*
 		DeleteEmailServer Delete an SMTP server configuration
@@ -75,8 +77,8 @@ type EmailServerAPI interface {
 	GetEmailServer(ctx context.Context, emailServerId string) ApiGetEmailServerRequest
 
 	// GetEmailServerExecute executes the request
-	//  @return EmailServerListResponse
-	GetEmailServerExecute(r ApiGetEmailServerRequest) (*EmailServerListResponse, *APIResponse, error)
+	//  @return GetEmailServer200Response
+	GetEmailServerExecute(r ApiGetEmailServerRequest) (*GetEmailServer200Response, *APIResponse, error)
 
 	/*
 		ListEmailServers List all enrolled SMTP servers
@@ -95,7 +97,7 @@ type EmailServerAPI interface {
 	/*
 		TestEmailServer Test an SMTP server configuration
 
-		Tests the specified custom SMTP Server configuration
+		Tests the specified custom SMTP server configuration
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param emailServerId
@@ -107,44 +109,48 @@ type EmailServerAPI interface {
 	TestEmailServerExecute(r ApiTestEmailServerRequest) (*APIResponse, error)
 
 	/*
-		UpdateEmailServer Update an SMTP server configuration
+			UpdateEmailServer Update an SMTP server configuration
 
-		Updates the specified custom SMTP server configuration
+			Updates the specified custom SMTP server configuration
 
-		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@param emailServerId
-		@return ApiUpdateEmailServerRequest
+		> **Note:** When you update an SMTP server configuration that uses OAuth 2.0 authentication, the [`authType`](#components/schemas/BaseEmailServer/properties/authType) property is required in the request body.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param emailServerId
+			@return ApiUpdateEmailServerRequest
 	*/
 	UpdateEmailServer(ctx context.Context, emailServerId string) ApiUpdateEmailServerRequest
 
 	// UpdateEmailServerExecute executes the request
-	//  @return EmailServerResponse
-	UpdateEmailServerExecute(r ApiUpdateEmailServerRequest) (*EmailServerResponse, *APIResponse, error)
+	//  @return GetEmailServer200Response
+	UpdateEmailServerExecute(r ApiUpdateEmailServerRequest) (*GetEmailServer200Response, *APIResponse, error)
 }
 
 // EmailServerAPIService EmailServerAPI service
 type EmailServerAPIService service
 
 type ApiCreateEmailServerRequest struct {
-	ctx             context.Context
-	ApiService      EmailServerAPI
-	emailServerPost *EmailServerPost
-	retryCount      int32
+	ctx                      context.Context
+	ApiService               EmailServerAPI
+	createEmailServerRequest *CreateEmailServerRequest
+	retryCount               int32
 }
 
-func (r ApiCreateEmailServerRequest) EmailServerPost(emailServerPost EmailServerPost) ApiCreateEmailServerRequest {
-	r.emailServerPost = &emailServerPost
+func (r ApiCreateEmailServerRequest) CreateEmailServerRequest(createEmailServerRequest CreateEmailServerRequest) ApiCreateEmailServerRequest {
+	r.createEmailServerRequest = &createEmailServerRequest
 	return r
 }
 
-func (r ApiCreateEmailServerRequest) Execute() (*EmailServerResponse, *APIResponse, error) {
+func (r ApiCreateEmailServerRequest) Execute() (*BaseEmailServer, *APIResponse, error) {
 	return r.ApiService.CreateEmailServerExecute(r)
 }
 
 /*
 CreateEmailServer Create a custom SMTP server
 
-Creates a custom email SMTP server configuration for your org
+Creates a custom email SMTP server configuration for your org.
+
+For more information about configuring the OAuth 2.0 authentication methods, see [Custom email providers with OAuth 2.0](https://developer.okta.com/docs/guides/custom-smtp/main/).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateEmailServerRequest
@@ -159,13 +165,13 @@ func (a *EmailServerAPIService) CreateEmailServer(ctx context.Context) ApiCreate
 
 // Execute executes the request
 //
-//	@return EmailServerResponse
-func (a *EmailServerAPIService) CreateEmailServerExecute(r ApiCreateEmailServerRequest) (*EmailServerResponse, *APIResponse, error) {
+//	@return BaseEmailServer
+func (a *EmailServerAPIService) CreateEmailServerExecute(r ApiCreateEmailServerRequest) (*BaseEmailServer, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EmailServerResponse
+		localVarReturnValue  *BaseEmailServer
 		localVarHTTPResponse *http.Response
 		localAPIResponse     *APIResponse
 		err                  error
@@ -205,7 +211,7 @@ func (a *EmailServerAPIService) CreateEmailServerExecute(r ApiCreateEmailServerR
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.emailServerPost
+	localVarPostBody = r.createEmailServerRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -455,7 +461,7 @@ type ApiGetEmailServerRequest struct {
 	retryCount    int32
 }
 
-func (r ApiGetEmailServerRequest) Execute() (*EmailServerListResponse, *APIResponse, error) {
+func (r ApiGetEmailServerRequest) Execute() (*GetEmailServer200Response, *APIResponse, error) {
 	return r.ApiService.GetEmailServerExecute(r)
 }
 
@@ -479,13 +485,13 @@ func (a *EmailServerAPIService) GetEmailServer(ctx context.Context, emailServerI
 
 // Execute executes the request
 //
-//	@return EmailServerListResponse
-func (a *EmailServerAPIService) GetEmailServerExecute(r ApiGetEmailServerRequest) (*EmailServerListResponse, *APIResponse, error) {
+//	@return GetEmailServer200Response
+func (a *EmailServerAPIService) GetEmailServerExecute(r ApiGetEmailServerRequest) (*GetEmailServer200Response, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EmailServerListResponse
+		localVarReturnValue  *GetEmailServer200Response
 		localVarHTTPResponse *http.Response
 		localAPIResponse     *APIResponse
 		err                  error
@@ -784,7 +790,7 @@ func (r ApiTestEmailServerRequest) Execute() (*APIResponse, error) {
 /*
 TestEmailServer Test an SMTP server configuration
 
-Tests the specified custom SMTP Server configuration
+Tests the specified custom SMTP server configuration
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param emailServerId
@@ -938,26 +944,28 @@ func (a *EmailServerAPIService) TestEmailServerExecute(r ApiTestEmailServerReque
 }
 
 type ApiUpdateEmailServerRequest struct {
-	ctx                context.Context
-	ApiService         EmailServerAPI
-	emailServerId      string
-	emailServerRequest *EmailServerRequest
-	retryCount         int32
+	ctx                       context.Context
+	ApiService                EmailServerAPI
+	emailServerId             string
+	getEmailServer200Response *GetEmailServer200Response
+	retryCount                int32
 }
 
-func (r ApiUpdateEmailServerRequest) EmailServerRequest(emailServerRequest EmailServerRequest) ApiUpdateEmailServerRequest {
-	r.emailServerRequest = &emailServerRequest
+func (r ApiUpdateEmailServerRequest) GetEmailServer200Response(getEmailServer200Response GetEmailServer200Response) ApiUpdateEmailServerRequest {
+	r.getEmailServer200Response = &getEmailServer200Response
 	return r
 }
 
-func (r ApiUpdateEmailServerRequest) Execute() (*EmailServerResponse, *APIResponse, error) {
+func (r ApiUpdateEmailServerRequest) Execute() (*GetEmailServer200Response, *APIResponse, error) {
 	return r.ApiService.UpdateEmailServerExecute(r)
 }
 
 /*
 UpdateEmailServer Update an SMTP server configuration
 
-Updates the specified custom SMTP server configuration
+# Updates the specified custom SMTP server configuration
+
+> **Note:** When you update an SMTP server configuration that uses OAuth 2.0 authentication, the [`authType`](#components/schemas/BaseEmailServer/properties/authType) property is required in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param emailServerId
@@ -974,13 +982,13 @@ func (a *EmailServerAPIService) UpdateEmailServer(ctx context.Context, emailServ
 
 // Execute executes the request
 //
-//	@return EmailServerResponse
-func (a *EmailServerAPIService) UpdateEmailServerExecute(r ApiUpdateEmailServerRequest) (*EmailServerResponse, *APIResponse, error) {
+//	@return GetEmailServer200Response
+func (a *EmailServerAPIService) UpdateEmailServerExecute(r ApiUpdateEmailServerRequest) (*GetEmailServer200Response, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *EmailServerResponse
+		localVarReturnValue  *GetEmailServer200Response
 		localVarHTTPResponse *http.Response
 		localAPIResponse     *APIResponse
 		err                  error
@@ -1021,7 +1029,7 @@ func (a *EmailServerAPIService) UpdateEmailServerExecute(r ApiUpdateEmailServerR
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.emailServerRequest
+	localVarPostBody = r.getEmailServer200Response
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

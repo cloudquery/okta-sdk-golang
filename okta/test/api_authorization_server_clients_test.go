@@ -1,5 +1,5 @@
 /*
-Okta Admin Management
+Okta Admin Management API
 
 Allows customers to easily access the Okta Management APIs
 
@@ -27,7 +27,7 @@ import (
 	"context"
 	"testing"
 
-	openapiclient "github.com/okta/okta-sdk-golang/v6/okta"
+	openapiclient "github.com/okta/okta-sdk-golang/v8/okta"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
